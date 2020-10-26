@@ -35,6 +35,12 @@ export class Otp extends React.Component {
   componentDidMount(){
     this.decreseTime()
   }
+
+  componentDidUpdate() {
+    if(this.props.otpverify == true) {
+      this.props.navigation.navigate("Home");
+    }
+  }
    
     handleTextChange = (id,value) => this.setState({ [id]:value });
     resend=async()=>{

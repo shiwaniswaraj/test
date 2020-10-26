@@ -43,8 +43,7 @@ const options={
   headerTintColor: '#FFF',
   headerTitleStyle: {
     color:"#FFF",
-    textAlign:"center",
-    marginLeft:-20,
+    textAlign: 'center',
     fontFamily:"Helvetica-Neue"
   },
  }
@@ -120,7 +119,8 @@ export default function Navigation(props) {
     
     <Stack.Navigator
           screenOptions={{
-            headerBackTitle:"Back"
+            headerBackTitle:"Back",
+            headerTitleAlign: "center"
           }}
             >
       <Stack.Screen name="Login" options={{headerShown:null}} component={Login} />

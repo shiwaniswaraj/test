@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet,View,Image } from "react-native";
-import backgroundLogin from '@assets/images/backgroundlogin.png'
+import backgroundLogin from '@assets/images/backgroundlogin.jpg'
 import logo from '@assets/images/logo.png'
 import Button from '@components/Button'
 import Text from '@components/Text'
