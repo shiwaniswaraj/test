@@ -1,171 +1,218 @@
 import React, { useState } from "react";
-import { StyleSheet, View,Image,FlatList,Platform } from "react-native";
-import Input from '@components/Input'
-import Button from '@components/Button'
-import Text from '@components/Text'
-import banner from '@assets/images/banner.png'
-import pin from '@assets/images/pin.png'
-import iconPlane from '@assets/images/iconPlane.png'
-import iconCalendar from '@assets/images/iconCalendar.png'
-import arrowAngle from '@assets/images/arrowAngle.png'
-import chair from '@assets/images/chair.png'
+import { StyleSheet, View, Image, FlatList, Platform } from "react-native";
+import Input from "@components/Input";
+import Button from "@components/Button";
+import Text from "@components/Text";
+import banner from "@assets/images/banner.png";
+import pin from "@assets/images/pin.png";
+import iconPlane from "@assets/images/iconPlane.png";
+import iconCalendar from "@assets/images/iconCalendar.png";
+import arrowAngle from "@assets/images/arrowAngle.png";
+import chair from "@assets/images/chair.png";
 
 import Navigation from "../../../navigation";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import {connect} from 'react-redux';
-import {searchFlight} from '../../redux/action/flight';
+import { connect } from "react-redux";
+import { searchFlight } from "../../redux/action/flight";
+import NoImage from "../../../assets/images/image-not-found.jpg";
 
+export class Deals extends React.Component {
+	state = {};
+	async componentDidMount() {
+		const { route } = this.props;
+		const { data } = route.params;
+		this.setState({
+			data,
+			endAirport: JSON.parse(data).segments[0].endAirport,
+			startAirport: JSON.parse(data).segments[0].startAirport,
+			date: JSON.parse(data).segments[0].dateTime.date,
+		});
+		// console.log(JSON.parse(data).segments[0].endAirport)
+	}
+	UNSAFE_componentWillMount() {
+		const { route } = this.props;
+		const { data } = route.params;
+		const unsubscribe = this.props.navigation.addListener("focus", () => {
+			this.props.searchFlight(data);
+		});
+	}
 
+	componentDidUpdate() {
+		console.log("items = ", this.props.aircraft_list);
+	}
+	render() {
+		const { data, endAirport, startAirport, time, date, price } = this.state;
+		const Item = ({ item }) => (
+			<TouchableOpacity
+				style={styles.item}
+				onPress={() => {
+					this.props.navigation.navigate("DealsInner", {
+						title: item.startPosition.city,
+						id: item.lift.id,
+						item: item,
+						data,
+						to: endAirport,
+						from: startAirport,
+						date,
+					});
+				}}
+			>
+				{item.lift.photo.image ? (
+					<Image
+						source={{ uri: item.lift.photo.image }}
+						style={styles.banner}
+					/>
+				) : (
+					<Image
+						source={NoImage}
+						style={styles.banner}
+					/>
+				)}
 
+				<View style={styles.whiteBottom}>
+					<View style={styles.whiteBottomInner}>
+						<Image style={styles.pin} source={pin} />
+						<Text style={{ flex: 1, flexWrap: "wrap" }}>
+							{item.startPosition.city}
+						</Text>
+						<Image style={styles.pin} source={iconPlane} />
+						<Text>{item.lift.aircraftCategory}</Text>
 
-export   class Deals extends React.Component {
-  state={}
-  async componentDidMount(){
-    const{route}=this.props;
-    const { data} = route.params;
-    this.setState({
-      data,
-      endAirport:JSON.parse(data).segments[0].endAirport,
-      startAirport:JSON.parse(data).segments[0].startAirport,
-      date:JSON.parse(data).segments[0].dateTime.date,
-      
-    });
-    // console.log(JSON.parse(data).segments[0].endAirport)
-    
-    
-    }
-    UNSAFE_componentWillMount(){
-      const{route}=this.props;
-      const { data} = route.params;
-      const unsubscribe = this.props.navigation.addListener('focus', () => {
+						{/* <Image style={[styles.pin, styles.arrow]} source={arrowAngle} />
+						<Image style={styles.pin} source={pin} />
+						<Text style={{ flex: 1, flexWrap: "wrap" }}>
+							{endAirport && endAirport.name}
+						</Text> */}
+					</View>
+					{/* <View style={styles.whiteBottomInner}>
+						<Image style={styles.pin} source={iconPlane} />
+						<Text>{item.lift.aircraftCategory}</Text>
+						<Text style={{ fontSize: 11, marginLeft: 30 }}>
+							UP TO {item.lift.maxPax} SEATS
+						</Text>
+					</View> */}
+					{/* {data &&
+						JSON.parse(data).segments.map((e) => {
+							return (
+								<View style={styles.whiteBottomInner}>
+									<View
+										style={{
+											flex: 1,
+											flexDirection: "row",
+											alignItems: "center",
+										}}
+									>
+										<Image style={styles.pin} source={iconCalendar} />
+										<Text>{e.dateTime.date}</Text>
+									</View>
+									<View style={{ marginTop: -13 }}>
+										<View
+											style={{
+												flexDirection: "row",
+												alignItems: "center",
+												justifyContent: "flex-end",
+												marginBottom: 3,
+											}}
+										>
+											<Image
+												source={chair}
+												style={{ width: 15, height: 15, marginRight: 10 }}
+												resizeMode="contain"
+											/>
+											<Text style={{ color: "red", textAlign: "right" }}>
+												{e.paxCount}
+											</Text>
+										</View>
+									</View>
+								</View>
+							);
+						})} */}
 
-        this.props.searchFlight(data);
-        
-      });    
-    }
-    render(){
-      const {data,endAirport,startAirport,time,date,price}=this.state;
-        const Item = ({ item }) => (
-            <TouchableOpacity style={styles.item} onPress={()=>{this.props.navigation.navigate('DealsInner',{title:item.lift.name,id:item.lift.id,item:item,data,to:endAirport,from:startAirport,date})}}>
-                <Image source={{uri:item.lift.photo.image}} style={styles.banner}/>
-                
-                
-                <View style={styles.whiteBottom}>
-                <View style={styles.whiteBottomInner}>
-                    <Image style={styles.pin} source={pin}/>
-                    <Text style={{flex: 1, flexWrap: 'wrap'}}>{item.startPosition.city}</Text>
-                    
-                    <Image style={[styles.pin,styles.arrow]} source={arrowAngle}/>
-                    <Image style={styles.pin} source={pin}/>
-                    <Text style={{flex: 1, flexWrap: 'wrap'}}>{endAirport && endAirport.name}</Text>
-                </View>
-                <View style={styles.whiteBottomInner}>
-                    <Image style={styles.pin} source={iconPlane}/>
-                    <Text>{item.lift.aircraftType}</Text>
-                    <Text style={{fontSize:11,marginLeft:30}}>UP TO {item.lift.maxPax} SEATS</Text>
-                </View>
-                {
-                data && JSON.parse(data).segments.map((e)=>{
-               return (
-                <View style={styles.whiteBottomInner}>
-                    <View style={{flex:1,flexDirection:"row",alignItems:"center"}}>
-                    <Image style={styles.pin} source={iconCalendar}/>
-                    <Text>{e.dateTime.date}</Text>
-                    </View>
-                    <View style={{marginTop:-13}}>
-                        <View style={{flexDirection:"row",alignItems:"center",justifyContent:"flex-end",marginBottom:3}}>
-                        <Image source={chair} style={{width:15,height:15,marginRight:10}} resizeMode="contain"/>
-        <Text style={{color:'red',textAlign:"right"}}>{e.paxCount}</Text>
-                        </View>
-                        
-                    
-                    </View>
-                    
-                </View>
-               )})
-    }
-
-                   <View style={{flexDirection:"row",alignItems:"center",alignSelf:'flex-end'}}> 
-                        {/* <Text style={{fontSize:11,marginRight:10}}>WHOLE AIRCRAFT</Text> */}
-                        <Text style={{color:'red'}}>{item.sellerprice.currency} {item.sellerprice.price}</Text>
-                        </View> 
-                </View>
-
-            </TouchableOpacity>
-          );
-        const renderItem = ({ item }) => (
-            <Item item={item} />
-          );
-    const{aircraft_list}=this.props;
-    return(<View style={styles.container}>
-      {
-        aircraft_list && aircraft_list.length<=0 && <Text style={{padding:20,color:'#FFF',fontSize:13}}>No Result Found </Text> 
-      }
-       <FlatList
-                data={this.props.aircraft_list}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-            />
-  </View>)
-    }
+					<View
+						style={{
+							flexDirection: "row",
+							alignItems: "center",
+							alignSelf: "flex-end",
+						}}
+					>
+						{/* <Text style={{fontSize:11,marginRight:10}}>WHOLE AIRCRAFT</Text> */}
+						<Text style={{ color: "red", fontSize: 24  }}>
+							${item.sellerprice.price}
+						</Text>
+					</View>
+				</View>
+			</TouchableOpacity>
+		);
+		const renderItem = ({ item }) => <Item item={item} />;
+		const { aircraft_list } = this.props;
+		return (
+			<View style={styles.container}>
+				{aircraft_list && aircraft_list.length <= 0 && (
+					<Text style={{ padding: 20, color: "#FFF", fontSize: 13 }}>
+						No Result Found{" "}
+					</Text>
+				)}
+				<FlatList
+					data={this.props.aircraft_list}
+					renderItem={renderItem}
+					keyExtractor={(item) => item.id}
+				/>
+			</View>
+		);
+	}
 }
-
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#3d3d3d",
-
-  },
-  btnBase:{
-    flexDirection:'row',
-    justifyContent:"space-between",
-    marginTop:20
-  },
-  barBottom:{
-    backgroundColor:'#AF9A63',
-    padding:10,
-    alignItems:"flex-start",
-  },
-  banner:{
-      width:'100%',
-      resizeMode:"cover",
-      height:250
-  },
-  whiteBottom:{
-      padding:20,
-      backgroundColor:"#FFF",
-  },
-  whiteBottomInner:{
-      flexDirection:"row",
-      alignItems:"center",
-      paddingVertical:10
-  },
-  pin:{
-      width:20,
-      height:20,
-      resizeMode:"contain",
-      marginRight:10
-  },
-  arrow:{
-   marginLeft:20,   
-   marginRight:20,   
-  }
-
+	container: {
+		flex: 1,
+		backgroundColor: "#3d3d3d",
+	},
+	btnBase: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		marginTop: 20,
+	},
+	barBottom: {
+		backgroundColor: "#AF9A63",
+		padding: 10,
+		alignItems: "flex-start",
+	},
+	banner: {
+		width: "100%",
+		resizeMode: "cover",
+		height: 250,
+	},
+	whiteBottom: {
+		paddingHorizontal: 10,
+		paddingBottom:10,
+		backgroundColor: "#FFF",
+	},
+	whiteBottomInner: {
+		flexDirection: "row",
+		alignItems: "center",
+		paddingVertical: 10,
+	},
+	pin: {
+		width: 20,
+		height: 20,
+		resizeMode: "contain",
+		marginRight: 10,
+	},
+	arrow: {
+		marginLeft: 20,
+		marginRight: 20,
+	},
 });
 
-
-
-const mapStateToProps=state=>{
-  return{
-      airport_list:state.flight.airport_list, 
-      aircraft_list:state.flight.aircraft_list
-      
-   }
-}
-const mapDispatchToProps = dispatch => {
-  return{
-     searchFlight:(data)=>dispatch(searchFlight(data))
-    }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(Deals);
+const mapStateToProps = (state) => {
+	return {
+		airport_list: state.flight.airport_list,
+		aircraft_list: state.flight.aircraft_list,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		searchFlight: (data) => dispatch(searchFlight(data)),
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Deals);

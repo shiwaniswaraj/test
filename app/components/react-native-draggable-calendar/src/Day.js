@@ -57,7 +57,7 @@ export class Day extends PureComponent {
                 <Text style={[...usedDayTextStyle, !data.available && {opacity: .6}]}>
                   {data.date.getDate()}
                   </Text>
-                <Text style={[...usedDayTextStyle,{fontSize:11}, !data.available && {opacity: .6}]}  >
+                <Text style={[...usedDayTextStyle,{fontSize:10}, !data.available && {opacity: .6}, {color: "#b49a5a"}]}  >
                   {/* $100 */}
                   {data.price && "$"+data.price}
                   {/* {this.props.price_cal.map((e)=>{

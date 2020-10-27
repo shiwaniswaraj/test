@@ -167,7 +167,7 @@ export const searchAirport = (filter,pgNo,perPage) => {
 
         
         
-      export const getDealPrice = (startposition,endposition,time) => {
+      export const getDealPrice = (startposition,endposition,time, id) => {
         return async  (dispatch, getState) => {  
                 var fromdata = new FormData();
                 // fromdata.append("action","getcustomerbooking");
@@ -175,6 +175,7 @@ export const searchAirport = (filter,pgNo,perPage) => {
         fromdata.append("startposition",startposition);
         fromdata.append("endposition",endposition);
         fromdata.append("time",time);
+        fromdata.append("id",id);
 
     // dispatch({type:"showloading",paylod:true});
                   
