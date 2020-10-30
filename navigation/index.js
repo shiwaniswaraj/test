@@ -20,6 +20,7 @@ import MessageCenter from "../app/screens/MessageCenter";
 import Chat from "../app/screens/Chat";
 import DealsInner from "../app/screens/DealsInner";
 import Trips from "../app/screens/Trips";
+import WebViewScreen from "../app/screens/WebViewScreen";
 
 import icon1 from "@assets/images/icon5.png";
 import icon2 from "@assets/images/icon4.png";
@@ -38,6 +39,15 @@ const Tab = createBottomTabNavigator();
 const options = {
 	headerStyle: {
 		backgroundColor: "#3d3d3d",
+		borderWidth: 0,
+		borderBottomWidth: 0,
+		shadowRadius: 0,
+		shadowOffset: {
+			height: 0,
+		},
+	},
+	headerStyleWeb: {
+		backgroundColor: "#000",
 		borderWidth: 0,
 		borderBottomWidth: 0,
 		shadowRadius: 0,
@@ -71,20 +81,25 @@ function HomeTabScreen(props) {
 	const [icon4Image, setIcon4Image] = useState(icon4);
 	const [icon5Image, setIcon5Image] = useState(icon5);
 
-  useEffect(() => {
-    let icon1Data = (props.route.state && props.route.state.index == 0) ? icon1Red : icon1;
-    let icon2Data = (props.route.state && props.route.state.index == 1) ? icon2Red : icon2;
-    let icon3Data = (props.route.state && props.route.state.index == 2) ? icon3Red : icon3;
-    let icon4Data = (props.route.state && props.route.state.index == 3) ? icon4Red : icon4;
-    let icon5Data = (props.route.state && props.route.state.index == 4) ? icon5Red : icon5;
-    if (props.route.state != undefined) {
-      setIcon1Image(icon1Data);
-    }
-    setIcon2Image(icon2Data);
-    setIcon3Image(icon3Data);
-    setIcon4Image(icon4Data);
-    setIcon5Image(icon5Data);
-  });
+	useEffect(() => {
+		let icon1Data =
+			props.route.state && props.route.state.index == 0 ? icon1Red : icon1;
+		let icon2Data =
+			props.route.state && props.route.state.index == 1 ? icon2Red : icon2;
+		let icon3Data =
+			props.route.state && props.route.state.index == 2 ? icon3Red : icon3;
+		let icon4Data =
+			props.route.state && props.route.state.index == 3 ? icon4Red : icon4;
+		let icon5Data =
+			props.route.state && props.route.state.index == 4 ? icon5Red : icon5;
+		if (props.route.state != undefined) {
+			setIcon1Image(icon1Data);
+		}
+		setIcon2Image(icon2Data);
+		setIcon3Image(icon3Data);
+		setIcon4Image(icon4Data);
+		setIcon5Image(icon5Data);
+	});
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => {
@@ -138,7 +153,7 @@ function HomeTabScreen(props) {
 					),
 				}}
 			/> */}
-      <Tab.Screen name="Home" component={Home} />
+			<Tab.Screen name="Home" component={Home} />
 			<Tab.Screen name="Screen2" component={screen2} />
 			<Tab.Screen name="Trips" component={screen3} />
 			<Tab.Screen name="Screen4" component={screen4} />
@@ -218,6 +233,17 @@ export default function Navigation(props) {
 						headerTitleStyle: options.headerTitleStyle,
 					}}
 					component={EditProfile}
+				/>
+
+				<Stack.Screen
+					name="WebView"
+					options={({ route }) => ({
+						title: route.params.title,
+						headerStyle: options.headerStyleWeb,
+						headerTintColor: options.headerTintColor,
+						headerTitleStyle: options.headerTitleStyle,
+					})}
+					component={WebViewScreen}
 				/>
 
 				<Stack.Screen

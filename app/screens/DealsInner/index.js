@@ -19,7 +19,6 @@ import chair from "@assets/images/chair.png";
 import clockBlack from "@assets/images/clockBlack.png";
 import MapView from "react-native-maps";
 import moment from "moment";
-import Navigation from "../../../navigation";
 import { connect } from "react-redux";
 import { flightDetails, book } from "../../redux/action/flight";
 import Carousel, { Pagination } from "react-native-snap-carousel"; // 3.6.0
@@ -52,7 +51,7 @@ export class DealsInner extends React.Component {
 			price,
 			data: JSON.parse(data),
 		});
-		console.log(data);
+		console.log("deals inner data = ",data);
 		this.props.flightDetails(id);
 		//this.toggle();
 	}
@@ -143,9 +142,9 @@ export class DealsInner extends React.Component {
 						{ borderBottomWidth: 1, borderBottomColor: "#000" },
 					]}
 				>
-					{data.segments.map((e) => {
+					{data.segments.map((e, i) => {
 						return (
-							<View style={styles.whiteBottomInner}>
+							<View key={i} style={styles.whiteBottomInner}>
 								<Image style={styles.pin} source={pin} />
 								<Text>{e.startAirport.icao}</Text>
 
@@ -301,8 +300,8 @@ export class DealsInner extends React.Component {
 								</View>
 								<MapView
 									initialRegion={{
-										latitude: e.startAirport.latitude,
-										longitude: e.startAirport.longitude,
+										latitude: parseFloat(Boolean(e.startAirport.latitude) ? e.startAirport.latitude : 0),
+										longitude: parseFloat(Boolean(e.startAirport.longitude) ? e.startAirport.longitude : 0),
 										latitudeDelta: 0.0922,
 										longitudeDelta: 0.0421,
 									}}
@@ -328,8 +327,8 @@ export class DealsInner extends React.Component {
 								</View>
 								<MapView
 									initialRegion={{
-										latitude: e.endAirport.latitude,
-										longitude: e.endAirport.longitude,
+										latitude: parseFloat(Boolean(e.endAirport.latitude) ? e.endAirport.latitude : 0),
+										longitude: parseFloat(Boolean(e.endAirport.longitude) ? e.endAirport.latitude : 0),
 										latitudeDelta: 0.0922,
 										longitudeDelta: 0.0421,
 									}}
@@ -436,7 +435,7 @@ export class DealsInner extends React.Component {
 							renderItem={renderItem}
 							keyExtractor={(item) => item.id}
 						/>
-						<BottomSheet
+						{/* <BottomSheet
 							visible={this.state.visible}
 							onBackButtonPress={this.toggle}
 							onBackdropPress={this.toggle}
@@ -454,7 +453,7 @@ export class DealsInner extends React.Component {
 									/>
 								</TouchableOpacity>
 							</View>
-						</BottomSheet>
+						</BottomSheet> */}
 					</>
 				)}
 			</View>

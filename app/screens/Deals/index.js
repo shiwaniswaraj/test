@@ -9,8 +9,6 @@ import iconPlane from "@assets/images/iconPlane.png";
 import iconCalendar from "@assets/images/iconCalendar.png";
 import arrowAngle from "@assets/images/arrowAngle.png";
 import chair from "@assets/images/chair.png";
-
-import Navigation from "../../../navigation";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { searchFlight } from "../../redux/action/flight";
@@ -21,6 +19,7 @@ export class Deals extends React.Component {
 	async componentDidMount() {
 		const { route } = this.props;
 		const { data } = route.params;
+		console.log("componete did mount deals = ", data, this.props);
 		this.setState({
 			data,
 			endAirport: JSON.parse(data).segments[0].endAirport,
@@ -32,14 +31,12 @@ export class Deals extends React.Component {
 	UNSAFE_componentWillMount() {
 		const { route } = this.props;
 		const { data } = route.params;
+		console.log("componete will mount deals = ", data, this.props);
 		const unsubscribe = this.props.navigation.addListener("focus", () => {
 			this.props.searchFlight(data);
 		});
 	}
 
-	componentDidUpdate() {
-		console.log("items = ", this.props.aircraft_list);
-	}
 	render() {
 		const { data, endAirport, startAirport, time, date, price } = this.state;
 		const Item = ({ item }) => (
@@ -63,10 +60,7 @@ export class Deals extends React.Component {
 						style={styles.banner}
 					/>
 				) : (
-					<Image
-						source={NoImage}
-						style={styles.banner}
-					/>
+					<Image source={NoImage} style={styles.banner} />
 				)}
 
 				<View style={styles.whiteBottom}>
@@ -136,7 +130,7 @@ export class Deals extends React.Component {
 						}}
 					>
 						{/* <Text style={{fontSize:11,marginRight:10}}>WHOLE AIRCRAFT</Text> */}
-						<Text style={{ color: "red", fontSize: 24  }}>
+						<Text style={{ color: "red", fontSize: 24 }}>
 							${item.sellerprice.price}
 						</Text>
 					</View>
@@ -148,9 +142,17 @@ export class Deals extends React.Component {
 		return (
 			<View style={styles.container}>
 				{aircraft_list && aircraft_list.length <= 0 && (
-					<Text style={{ padding: 20, color: "#FFF", fontSize: 13 }}>
-						No Result Found{" "}
-					</Text>
+					<View
+						style={{
+							flex: 1,
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<Text style={{ color: "#FFF", fontSize: 18 }}>
+							No Result Found
+						</Text>
+					</View>
 				)}
 				<FlatList
 					data={this.props.aircraft_list}
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
 	},
 	whiteBottom: {
 		paddingHorizontal: 10,
-		paddingBottom:10,
+		paddingBottom: 10,
 		backgroundColor: "#FFF",
 	},
 	whiteBottomInner: {

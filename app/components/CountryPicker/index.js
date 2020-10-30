@@ -7,31 +7,21 @@ import {
 } from 'react-native';
 import { color } from 'react-native-reanimated';
 
-import PhoneInput from 'react-native-phone-input';
-
 import CountryPicker, { DARK_THEME,FlagButton } from 'react-native-country-picker-modal'
 
 export default class PickerInput extends Component {
  
-    constructor() {
-        super();
-        
+    constructor(props) {
+        super(props);
         this.onPressFlag = this.onPressFlag.bind(this);
         this.selectCountry = this.selectCountry.bind(this);
         this.state = {
-          cca2: 'US',
+          cca2: Boolean(this.props.countryCode) ? this.props.countryCode : "US"
         };
         // this.phone = React.createRef();
         this.countryPicker = React.createRef();
-        
     }
-    
-      componentDidMount() {
-        this.setState({
-        //   pickerData: this.phone.getPickerData(),
-        });
-      }
-    
+
       onPressFlag=()=> {
         // this.countryPicker.openModal();
         this.setState({

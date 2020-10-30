@@ -8,7 +8,6 @@ import store from './app/redux/';
 import Application from './index'
 import { Root } from "native-base";
 
-
 export default function App() {
   
   let [fontsLoaded] = useFonts({

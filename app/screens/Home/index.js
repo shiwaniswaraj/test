@@ -7,7 +7,7 @@ import {
 	FlatList,
 	Dimensions,
 	ActivityIndicator,
-  SegmentedControlIOS,
+	SegmentedControlIOS,
 } from "react-native";
 import Text from "@components/Text";
 import plane from "@assets/images/plane.png";
@@ -42,16 +42,11 @@ export class Home extends React.Component {
 		activeTab: 0,
 	};
 	componentDidMount() {
-    this.props.getDealHome();
-    //console.log("prices mount = ", this.props.homedeal);
-  }
-  
-  componentDidUpdate() {
-    //console.log("prices update = ", this.props.homedeal);
-  }
+		this.props.getDealHome();
+	}
 
 	selectDate = (item, fromico, toico, time, from, to) => {
-    console.log("select list");
+		console.log("select list");
 		/* console.log("hey");
 		console.log("hey", item);
 		console.log("hey", fromico);
@@ -66,8 +61,8 @@ export class Home extends React.Component {
 				toico,
 				from,
 				to,
-        item,
-        "id": item.id
+				item,
+				id: item.id,
 			},
 			() => {
 				this.toggleOverlayCal();
@@ -75,10 +70,15 @@ export class Home extends React.Component {
 		);
 	};
 	searchData = async () => {
+		this.setState({
+			issearching: true,
+		});
 		// console.log()
-		const { fromico, time, toico, price, from, to, item } = this.state;
+		const { fromico, time, toico, price, from, to, item, date } = this.state;
 		// console.log(arrivalData)
 		// console.log(departureData)
+		// console.log("search data = ", item);
+		// console.log("search data = ", this.state);
 		var data = {
 			segments: [],
 		};
@@ -98,7 +98,8 @@ export class Home extends React.Component {
 				latitude: item.tolatitude,
 			},
 			dateTime: {
-				date: moment(Date.now()).format("YYYY-MM-DD"),
+				//date: moment(Date.now()).format("YYYY-MM-DD"),
+				date: moment(date).format("YYYY-MM-DD"),
 				time: time,
 				departure: true,
 				local: true,
@@ -107,14 +108,18 @@ export class Home extends React.Component {
 			paxSegment: true,
 			price: price,
 		});
-		console.log(JSON.stringify(data));
+		//console.log(JSON.stringify(data));
 		await this.props.resetAircraft();
+		this.setState({
+			issearching: false,
+		});
 		this.props.navigation.navigate("Deals", {
 			title: "Search Result",
 			to: from,
 			from: to,
 			time,
-			date: moment(Date.now()).format("YYYY-MM-DD"),
+			//date: moment(Date.now()).format("YYYY-MM-DD"),
+			date: moment(date).format("YYYY-MM-DD"),
 			price: price,
 			data: JSON.stringify(data),
 		});
@@ -125,35 +130,71 @@ export class Home extends React.Component {
 		this.setState({
 			showCal: !showCal,
 		});
-
+		console.log("show cal = ", showCal);
 		if (!showCal) {
 			this.setState({
 				issearching: true,
 				shows: false,
-      });
+			});
 			await this.props.getDealPrice(fromico, toico, time, id);
 			this.setState({
 				issearching: false,
 				shows: true,
 			});
 		}
+
+		return showCal;
 	};
 
 	dateSelect = (date, price) => {
-		console.log(date, price);
+		console.log("date select", date, price);
 		this.setState(
 			{
 				date,
 				price,
 			},
-			() => {
-				this.toggleOverlayCal();
-				setTimeout(() => {
-					this.searchData();
-				}, 1000);
+			async () => {
+				await this.toggleOverlayCal();
+				this.searchData();
+				/* setTimeout(() => {
+				}, 1000); */
 			}
 		);
 	};
+
+	sliderAction = async (item) => {
+		console.log("slider action =", item);
+		let data = {
+			segments: [],
+		};
+		data.segments.push({
+			startAirport: {
+				icao: item.fromicao
+			},
+			endAirport: {
+				icao: item.toicao
+			},
+			dateTime: {
+				date: moment(item.date).format("YYYY-MM-DD"),
+				time: item.time,
+				departure: true,
+				local: true,
+			},
+			paxCount: "1",
+			paxSegment: true,
+			price: item.price,
+		});
+		await this.props.resetAircraft();
+		this.props.navigation.navigate("Deals", {
+			title: "Search Result",
+			to: item.from,
+			from: item.to,
+			date: moment(item.date).format("YYYY-MM-DD"),
+			price: item.price,
+			data: JSON.stringify(data),
+		});
+
+	}
 
 	render() {
 		const { navigation } = this.props;
@@ -168,7 +209,7 @@ export class Home extends React.Component {
 						item.toicao,
 						item.time,
 						item.from,
-            item.to
+						item.to
 					);
 				}}
 			>
@@ -185,7 +226,8 @@ export class Home extends React.Component {
 		);
 		const renderItem = ({ item }) => <Item item={item} />;
 
-		const ItemCar = ({ item }) => (
+		const ItemCar = ({ item }) => {
+			return (
 			<View
 				style={{
 					flex: 1,
@@ -197,18 +239,20 @@ export class Home extends React.Component {
 				<View
 					style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
 				>
-					<Text style={styles.smText}>{new Date().toDateString()}</Text>
+					<Text style={styles.smText}>{new Date(item.date).toDateString()}</Text>
 					<View style={styles.mainBot}>
 						<Text style={styles.headingText}>{item.from}</Text>
 						<Image style={styles.planeImage} source={plane} />
 						<Text style={styles.headingText}>{item.to}</Text>
 					</View>
-					<View style={styles.btnPrice}>
-						<Text>${item.price}/SEAT</Text>
-					</View>
+					<TouchableOpacity style={styles.button} onPress={() => this.sliderAction(item)}>
+						<View style={styles.btnPrice}>
+							<Text>${item.price}/SEAT</Text>
+						</View>
+					</TouchableOpacity>
 				</View>
 			</View>
-		);
+		)};
 
 		return (
 			<View style={styles.container}>
@@ -242,6 +286,7 @@ export class Home extends React.Component {
 							this.props.homedeal.slider.map((e, i) => {
 								return (
 									<View
+										key={i}
 										style={[
 											styles.ww,
 											this.state.activeTab == i && styles.wwActive,

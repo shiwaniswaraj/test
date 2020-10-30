@@ -55,6 +55,7 @@ export const searchAirport = (filter,pgNo,perPage) => {
       return async  (dispatch, getState) => {  
               var fromdata = new FormData();
               fromdata.append("data",data);
+              console.log("search flight formdata = ",data);
               dispatch({type:"showloading",paylod:true});
             // dispatch({type:AIRCRAFT_LIST,paylod:null});
               
@@ -115,15 +116,14 @@ export const searchAirport = (filter,pgNo,perPage) => {
                 fromdata.append("action","getcustomerbooking");
                 fromdata.append("id_customer",id);
                 dispatch({type:"showloading",paylod:true});
-                  
+                console.log("id = ", id);
             await CALL_API("post","Customer/Getcustomerbooking",fromdata).then((res)=>{
               setTimeout(()=>{
               dispatch({type:"hideloading",paylod:true});
               },1000);
-
+              
               if(res.data.status==200){      
               dispatch({type:TRIPS,paylod:res.data.data});
-              console.log(res.data.data);
               // notify(res.data.message,"success");
               }else{
                 // notify(res.data.message,"danger");

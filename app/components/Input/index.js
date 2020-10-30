@@ -24,6 +24,7 @@ export default class Input extends Component {
     Animated.timing(this._animatedIsFocused, {
       toValue: (this.state.isFocused || this.props.value !== '') ? 1 : 0,
       duration: 200,
+      useNativeDriver: false
     }).start();
   }
 
