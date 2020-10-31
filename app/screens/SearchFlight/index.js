@@ -15,20 +15,10 @@ import {
 } from "react-native";
 import Button from "@components/Button";
 import Text from "@components/Text";
-import BasicUsageDemo from "@components/Calender";
 import Arrival from "@assets/images/arival.png";
 import Departure from "@assets/images/departure.png";
 import { BottomSheet } from "react-native-btr";
-import {
-	TouchableHighlight,
-	TouchableNativeFeedback,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
-import calendar from "@assets/images/calendar.png";
-import fax from "@assets/images/fax.png";
-import clock from "@assets/images/clock.png";
-import unitedStates from "@assets/images/united-states.png";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -37,15 +27,15 @@ import { AntDesign } from "@expo/vector-icons";
 import iconFlight from "@assets/images/flight.png";
 import flightDown from "@assets/images/flightDown.png";
 
-import returnImg from "@assets/images/returnImg.png";
-import leftFlightBox from "@assets/images/leftFlightBox.png";
-import rightFlightBox from "@assets/images/rightFlightBox.png";
 import SearchInput from "@components/SearchBar";
 
 import { connect } from "react-redux";
-import { searchAirport, getDealPrice } from "../../redux/action/flight";
+import {
+	searchAirport,
+	searchAirport2,
+	getDealPrice,
+} from "../../redux/action/flight";
 import moment from "moment";
-import { color } from "react-native-reanimated";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Slider } from "react-native-elements";
 import { requestPermissionsAsync } from "expo-notifications";
@@ -61,7 +51,6 @@ export class SearchFlight extends React.Component {
 
 	addReturn = () => {
 		const { selectedAirPort } = this.state;
-		// console.log(selectedAirPort);
 		var returning;
 		selectedAirPort.forEach((e) => {
 			if (e.isreturning) {
@@ -168,8 +157,6 @@ export class SearchFlight extends React.Component {
 				shows: true,
 			});
 		}
-		// setTimeout(()=>{
-		// },500)
 	};
 
 	// handleTextChange = (id,value) => this.setState({ [id]:value });
@@ -181,7 +168,8 @@ export class SearchFlight extends React.Component {
 			async () => {}
 		);
 		if (value.length > 2) {
-			await this.props.searchAirport(value, 1, 10);
+			//await this.props.searchAirport(value, 1, 10);
+			await this.props.searchAirport2(value);
 		}
 
 		console.log(this.props.airport_list);
@@ -408,7 +396,6 @@ export class SearchFlight extends React.Component {
 	clear = () => {
 		const { selectedAirPort } = this.state;
 		var c = selectedAirPort;
-		console.log(c);
 		if (c.length <= 1) {
 			return;
 		}
@@ -445,7 +432,8 @@ export class SearchFlight extends React.Component {
 					</Text>
 					<Text style={styles.itmHead}>{item.icao}</Text>
 				</View>
-				<Image source={{ uri: item.country[0].flag }} style={styles.flag} />
+				{/* <Image source={{ uri: item.country[0].flag }} style={styles.flag} /> */}
+				<Image source={{ uri: item.flag }} style={styles.flag} />
 			</Button>
 		);
 		const renderItem = ({ item }) => (
@@ -944,7 +932,7 @@ const styles = StyleSheet.create({
 	},
 	iconText: {
 		color: "#FFF",
-		marginTop: 5,
+		paddingVertical: 5,
 		alignItems: "center",
 		justifyContent: "center",
 	},
@@ -1031,6 +1019,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		searchAirport: (filter, pgNo, perPage) =>
 			dispatch(searchAirport(filter, pgNo, perPage)),
+		searchAirport2: (search) => dispatch(searchAirport2(search)),
 		getDealPrice: (startposition, endposition, time) =>
 			dispatch(getDealPrice(startposition, endposition, time)),
 	};

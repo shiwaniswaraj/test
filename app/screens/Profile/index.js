@@ -9,6 +9,7 @@ import faq from "@assets/images/iconProfile/faq.png";
 import shield from "@assets/images/iconProfile/shield.png";
 import insurance from "@assets/images/iconProfile/insurance.png";
 import logout from "@assets/images/iconProfile/logout.png";
+import AsyncStorage from "@react-native-community/async-storage";
 
 import { connect } from "react-redux";
 import { GetProfile, logoutAction } from "../../redux/action/auth";
@@ -29,6 +30,7 @@ export class Profile extends React.Component {
 	}
 
 	doLogout = async () => {
+		await AsyncStorage.multiRemove(["data", "token"]);
 		await this.props.logout();
 		this.props.navigation.navigate("Login");
 	};

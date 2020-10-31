@@ -47,7 +47,7 @@ export class DraggableCalendar extends Component {
     
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._initPanResponder();
     this._updateDayStatus(this.props.initialSelectedRange);
   }

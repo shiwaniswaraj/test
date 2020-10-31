@@ -42,7 +42,7 @@ export default class SearchInput extends Component {
     isFocused: false,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._animatedIsFocused = new Animated.Value(this.props.value === '' ? 0 : 1);
   }
 
@@ -53,6 +53,7 @@ export default class SearchInput extends Component {
     Animated.timing(this._animatedIsFocused, {
       toValue: (this.state.isFocused || this.props.value !== '') ? 1 : 0,
       duration: 200,
+      useNativeDriver: false
     }).start();
   }
 

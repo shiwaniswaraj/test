@@ -2,7 +2,6 @@ import { AppLoading } from "expo";
 import { useFonts } from 'expo-font';
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
-import Navigation from "./navigation";
 import { Provider } from 'react-redux';
 import store from './app/redux/';
 import Application from './index'

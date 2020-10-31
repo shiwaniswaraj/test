@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	StyleSheet,
 	View,
@@ -7,43 +7,46 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 	TouchableOpacity,
-	Animated,
 } from "react-native";
 import homeSlide from "@assets/images/homeSlide.png";
 import Input from "@components/Input";
 import Button from "@components/Button";
-import logoCircle from "@assets/images/logoCircle.png";
 import * as ImagePicker from "expo-image-picker";
 
 import { connect } from "react-redux";
 import { GetProfile, SaveProfile } from "../../redux/action/auth";
 import PickerInput from "@components/CountryPicker";
-import PhoneInput from "react-native-phone-input";
 
 export class EditProfile extends React.Component {
 	state = {
-		fname: "",
-		lname: "",
+		name: "",
 		email: "",
 		tel: "",
 		ccode: "",
 		txtcountrycode: "",
 		fetchingData: true,
+		address: "",
+		city: "",
+		userstate: "",
+		pincode: "",
 	};
 	async componentDidMount() {
 		const { id } = this.props.data;
 		const { profiledata } = this.props;
-
+		console.log(profiledata);
 		await this.props.getProfile(id);
-		
+
 		this.setState({
-			fname: profiledata.fname,
-			lname: profiledata.lname,
+			name: profiledata.name,
 			image: profiledata.image,
 			email: profiledata.email,
 			tel: profiledata.countrycode + profiledata.phonenumber,
 			txtcountrycode: profiledata.txtcountrycode,
-			ccode: profiledata.countrycode
+			ccode: profiledata.countrycode,
+			address: profiledata.address,
+			city: profiledata.city,
+			userstate: profiledata.state,
+			pincode: profiledata.pincode,
 		});
 		this.setState({ fetchingData: false });
 
@@ -91,22 +94,39 @@ export class EditProfile extends React.Component {
 
 	saveProfile = async () => {
 		const { profiledata } = this.props;
-		let { fname, lname, email, image, ccode, tel, result } = this.state;
+		let {
+			name,
+			email,
+			image,
+			ccode,
+			tel,
+			result,
+			txtcountrycode,
+			address,
+			city,
+			userstate,
+			pincode,
+		} = this.state;
 
 		ccode = ccode.startsWith("+") && Boolean(ccode) ? ccode : `+${ccode}`;
 		tel = tel.startsWith(ccode) ? tel.replace(ccode, "") : tel;
-		console.log("image = ", image, result);
-		await this.props.save(
-			fname,
-			lname,
+
+		const dataToSend = {
+			name,
 			email,
-			profiledata.id,
 			ccode,
-			tel
-		);
+			tel,
+			txtcountrycode,
+			address,
+			city,
+			userstate,
+			pincode,
+			id: profiledata.id,
+		};
+		await this.props.save(dataToSend);
 		// await this.props.getProfile(id);
 		// this.setState({
-		//   fname:profiledata.fname,
+		//   name:profiledata.name,
 		//   lname:profiledata.lname,
 		//   email:profiledata.email,
 		//   tel:"+"+profiledata.countrycode+profiledata.phonenumber,
@@ -142,18 +162,10 @@ export class EditProfile extends React.Component {
 
 								<View style={styles.listMain}>
 									<Input
-										label="First name"
-										value={this.state.fname}
+										label="Name"
+										value={this.state.name}
 										onChangeText={(val) => {
-											this.handleTextChange("fname", val);
-										}}
-										black
-									/>
-									<Input
-										label="Last name"
-										value={this.state.lname}
-										onChangeText={(val) => {
-											this.handleTextChange("lname", val);
+											this.handleTextChange("name", val);
 										}}
 										black
 									/>
@@ -164,6 +176,47 @@ export class EditProfile extends React.Component {
 											this.handleTextChange("email", val);
 										}}
 										black
+										editable={false}
+									/>
+
+									<Input
+										label="Address"
+										value={this.state.address}
+										onChangeText={(val) => {
+											this.handleTextChange("address", val);
+										}}
+										black
+										autoCapitalize="none"
+									/>
+
+									<Input
+										label="City"
+										value={this.state.city}
+										onChangeText={(val) => {
+											this.handleTextChange("city", val);
+										}}
+										black
+										autoCapitalize="none"
+									/>
+
+									<Input
+										label="State"
+										value={this.state.userstate}
+										onChangeText={(val) => {
+											this.handleTextChange("userstate", val);
+										}}
+										black
+										autoCapitalize="none"
+									/>
+
+									<Input
+										label="Pincode"
+										value={this.state.pincode}
+										onChangeText={(val) => {
+											this.handleTextChange("pincode", val);
+										}}
+										black
+										autoCapitalize="none"
 									/>
 
 									<View style={{ flexDirection: "row" }}>
@@ -292,18 +345,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getProfile: (id) => dispatch(GetProfile(id)),
-		save: (fname, lname, email, id_customer, countrycode, phonenumber, image) =>
-			dispatch(
-				SaveProfile(
-					fname,
-					lname,
-					email,
-					id_customer,
-					countrycode,
-					phonenumber,
-					image
-				)
-			),
+		save: (dataToSend) => dispatch(SaveProfile(dataToSend)),
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

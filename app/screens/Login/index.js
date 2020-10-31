@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Image } from "react-native";
 import backgroundLogin from "@assets/images/backgroundlogin.jpg";
 import logo from "@assets/images/logo.png";
@@ -6,7 +6,7 @@ import Button from "@components/Button";
 import Text from "@components/Text";
 import Link from "@components/Link";
 import { connect } from "react-redux";
-import { /* LoginAction */ changeData } from "../../redux/action/auth";
+import { changeData } from "../../redux/action/auth";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -33,7 +33,6 @@ class Login extends React.Component {
 	}
 	getData = async (storage_Key) => {
 		const value = await AsyncStorage.getItem(storage_Key);
-		console.log(value);
 		if (storage_Key == "data") {
 			return value ? JSON.parse(value) : null;
 		}

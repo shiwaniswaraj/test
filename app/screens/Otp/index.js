@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import React from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Input from "@components/Input";
 import Button from "@components/Button";
 import Text from "@components/Text";
-import { Toast } from "native-base";
 import { connect } from "react-redux";
 import {
 	ResendOtp,
 	VerifyOtp,
-	LoginAction,
 	RegisterAction,
 } from "../../redux/action/auth";
-import Redirect from "@components/Redirect";
 
 export class Otp extends React.Component {
 	constructor(props) {
@@ -36,6 +33,7 @@ export class Otp extends React.Component {
 		}, 1000);
 	};
 	componentDidMount() {
+		console.log(this.props.route);
 		this.decreseTime();
 	}
 
@@ -51,19 +49,20 @@ export class Otp extends React.Component {
 
 	resend = async () => {
 		const { route } = this.props;
-		const { phone, ccode } = route.params;
-		await this.props.resend(phone, ccode);
+		const { tel, ccode } = route.params;
+		await this.props.resend(tel, ccode);
 	};
 
 	verify = async () => {
 		const { route } = this.props;
-		const { phone, ccode, email, password, token, txtcountrycode } = route.params;
-		console.log("o code = ",txtcountrycode);
+		const { registerData } = route.params;
+		const { tel, ccode, email, password } = registerData;
+		
 		const { otp } = this.state;
-		await this.props.verify(phone, ccode, otp).then(async (response) => {
+		await this.props.verify(tel, ccode, otp).then(async (response) => {
 			if (response.data.status == 200) {
 				await this.props
-					.doSingup(email, password, ccode, phone, token, txtcountrycode)
+					.doSingup(registerData)
 					.then((response) => {
 						console.log("otp compo designup = ", response);
 						if (response.data.status == 200) {
@@ -169,9 +168,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		resend: (phone, ccode) => dispatch(ResendOtp(phone, ccode)),
 		verify: (phone, ccode, otp) => dispatch(VerifyOtp(phone, ccode, otp)),
-		doLogin: (em, pass, tok) => dispatch(LoginAction(em, pass, tok)),
-		doSingup: (em, pass, ccode, phone, token, txtcountrycode) =>
-			dispatch(RegisterAction(em, pass, ccode, phone, token, txtcountrycode)),
+		doSingup: (registerData) =>
+			dispatch(RegisterAction(registerData)),
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Otp);

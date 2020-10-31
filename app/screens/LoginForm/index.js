@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Image, Platform } from "react-native";
+import React from "react";
+import { StyleSheet, View, Platform } from "react-native";
 import Input from "@components/Input";
 import Button from "@components/Button";
 import Redirect from "@components/Redirect";
-import Text from "@components/Text";
 // import { Notifications, Permissions } from 'expo';
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
@@ -11,6 +10,7 @@ import Constants from "expo-constants";
 
 import { connect } from "react-redux";
 import { LoginAction } from "../../redux/action/auth";
+import AsyncStorage from "@react-native-community/async-storage";
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -67,6 +67,8 @@ class LoginForm extends React.Component {
 				return;
 			}
 			token = (await Notifications.getExpoPushTokenAsync()).data;
+			console.log("token = ", token);
+			console.log("get token = ", await Notifications.getExpoPushTokenAsync());
 		} else {
 			alert("Must use physical device for Push Notifications");
 		}
@@ -97,7 +99,7 @@ class LoginForm extends React.Component {
 
 	async componentDidMount() {
     //this.enablePushNotifications();
-    this.props.showLoadingGlobal();
+    //this.props.showLoadingGlobal();
     await this.enablePushNotifications().then((token) => {
 			this.setState({
 				token,
@@ -106,8 +108,9 @@ class LoginForm extends React.Component {
 			if (this.props.route.params) {
 				this.loginIfHavePrams(token);
 			}
-    });
-    this.props.hideLoadingGlobal();
+		});
+		alert("token = " + this.state.token);
+    //this.props.hideLoadingGlobal();
 		if (this.props.isLoggedin) {
 			this.props.navigation.navigate("Home");
 		}
@@ -119,6 +122,7 @@ class LoginForm extends React.Component {
       this.setState({email: email, password: password});
 			await this.props.doLogin(email, password, token).then((response) => {
 				if (response.data.status == 200) {
+					console.log("parmas user data = ", response.data.data);
 					this.storeData("token", response.data.data.token);
 					this.storeData("data", JSON.stringify(response.data.data));
 				}
@@ -147,10 +151,13 @@ class LoginForm extends React.Component {
 
 	handleLogin = async () => {
 		const { email, password, token } = this.state;
-		await this.props.doLogin(email, password, token).then((response) => {
+		await this.props.doLogin(email, password, token).then(async (response) => {
 			if (response.data.status == 200) {
+				console.log("user data = ", response.data.data);
 				this.storeData("token", response.data.data.token);
 				this.storeData("data", JSON.stringify(response.data.data));
+				console.log(await AsyncStorage.getItem("data"));
+				console.log(await AsyncStorage.getItem("token"));
 			}
 		});
 		/* setTimeout(()=>{

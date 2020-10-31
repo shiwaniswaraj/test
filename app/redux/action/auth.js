@@ -78,16 +78,35 @@ export const CheckEmailMobile = (
 	};
 };
 
-export const RegisterAction = (em, pass, countrycode, phonenumber, token, txtcountrycode) => {
+export const RegisterAction = (registerData) => {
+	const {
+		email,
+		password,
+		ccode,
+		tel,
+		token,
+		txtcountrycode,
+		name,
+		address,
+		city,
+		userstate,
+		pincode,
+	} = registerData;
+
 	return async (dispatch, getState) => {
 		var data = new FormData();
 		data.append("action", "register");
-		data.append("email", em.toLowerCase());
-		data.append("password", pass);
-		data.append("countrycode", countrycode);
-		data.append("phonenumber", phonenumber);
+		data.append("email", email.toLowerCase());
+		data.append("password", password);
+		data.append("countrycode", ccode);
+		data.append("phonenumber", tel);
 		data.append("devicetoken", token);
 		data.append("txtcountrycode", txtcountrycode);
+		data.append("name", name);
+		data.append("address", address);
+		data.append("city", city);
+		data.append("state", userstate);
+		data.append("pincode", pincode);
 		dispatch({ type: "showloading", paylod: true });
 
 		return await CALL_API("post", "Customer/register", data)
@@ -114,7 +133,7 @@ export const RegisterAction = (em, pass, countrycode, phonenumber, token, txtcou
 };
 
 export const VerifyOtp = (phonenumber, countrycode, otp) => {
-  console.log("verify otp =",phonenumber, "  ", countrycode, "  ",  otp );
+	console.log("verify otp =", phonenumber, "  ", countrycode, "  ", otp);
 	return async (dispatch, getState) => {
 		var data = new FormData();
 		data.append("action", "verifyotp");
@@ -147,7 +166,7 @@ export const VerifyOtp = (phonenumber, countrycode, otp) => {
 };
 
 export const ResendOtp = (phonenumber, countrycode) => {
-  console.log("resend = ", phonenumber, countrycode);
+	console.log("resend = ", phonenumber, countrycode);
 	return async (dispatch, getState) => {
 		var data = new FormData();
 		data.append("action", "resendotp");
@@ -181,10 +200,9 @@ export const LoginAction = (em, pass, token) => {
 		data.append("email", em);
 		data.append("password", pass);
 		data.append("devicetoken", token);
-		
+
 		return await CALL_API("post", "Customer/login", data)
 			.then((res) => {
-
 				if (res.data.status == 200) {
 					dispatch({ type: LOGIN, paylod: res.data.data });
 					notify(res.data.message, "success");
@@ -264,25 +282,33 @@ export const passChange = (
 	};
 };
 
-export const SaveProfile = (
-	fname,
-	lname,
-	email,
-	id_customer,
-	countrycode,
-	phonenumber,
-	image
-) => {
+export const SaveProfile = (dataToSend) => {
 	return async (dispatch, getState) => {
+		let {
+			name,
+			email,
+			address,
+			city,
+			userstate,
+			id,
+			pincode,
+			ccode,
+			tel,
+			txtcountrycode,
+		} = dataToSend;
 		var data = new FormData();
 		data.append("action", "editprofile");
-		data.append("fname", fname);
-		data.append("lname", lname);
-		data.append("id_customer", id_customer);
+		data.append("name", name);
+		data.append("id_customer", id);
 		data.append("email", email);
-		data.append("countrycode", countrycode);
-		data.append("phonenumber", phonenumber);
-		data.append("image", image);
+		data.append("countrycode", ccode);
+		data.append("phonenumber", tel);
+		data.append("address", address);
+		data.append("city", city);
+		data.append("state", userstate);
+		data.append("pincode", pincode);
+		data.append("txtcountrycode", txtcountrycode);
+		data.append("image", "");
 		dispatch({ type: "showloading", paylod: true });
 		console.log("before call = ");
 		await CALL_API("post", "Customer/editprofile", data)
