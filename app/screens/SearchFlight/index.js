@@ -315,15 +315,15 @@ export class SearchFlight extends React.Component {
 					icao: e.departureData.icao,
 					id: e.departureData.id,
 					name: e.departureData.name,
-					longitude: e.departureData.position.longitude,
-					latitude: e.departureData.position.latitude,
+					longitude: e.departureData.longitude,
+					latitude: e.departureData.latitude,
 				},
 				endAirport: {
 					icao: e.arrivalData.icao,
 					id: e.arrivalData.id,
 					name: e.arrivalData.name,
-					longitude: e.arrivalData.position.longitude,
-					latitude: e.arrivalData.position.latitude,
+					longitude: e.arrivalData.longitude,
+					latitude: e.arrivalData.latitude,
 				},
 				dateTime: {
 					date: moment(e.date).format("YYYY-MM-DD"),
@@ -489,7 +489,7 @@ export class SearchFlight extends React.Component {
 													e.departureData && { color: "#000" },
 												]}
 											>
-												{e.departureData ? e.departureData.name : "Departure"}
+												{e.departureData ? e.departureData.icao : "Departure"}
 											</Text>
 											<Image source={Departure} style={styles.sideIcon} />
 											<Text
@@ -499,19 +499,29 @@ export class SearchFlight extends React.Component {
 												]}
 											>
 												{e.departureData
-													? e.departureData.city
-													: "TAP TO SELECT AIRPORT"}
+													? e.departureData.name
+													: "TAP TO \nSELECT\nAIRPORT"}
 											</Text>
 											{e.departureData && (
 												<Text
 													style={[
+														styles.neTxt,
 														{ color: "#FFF" },
 														e.departureData && { color: "#000" },
 													]}
 												>
-													{e.departureData
-														? e.departureData.icao
-														: "TAP TO SELECT AIRPORT"}
+													{e.departureData.city}
+												</Text>
+											)}
+											{e.departureData && (
+												<Text
+													style={[
+														styles.neTxt,
+														{ color: "#FFF" },
+														e.departureData && { color: "#000" },
+													]}
+												>
+													{e.departureData.country}
 												</Text>
 											)}
 										</Button>
@@ -528,7 +538,7 @@ export class SearchFlight extends React.Component {
 													e.arrivalData && { color: "#000" },
 												]}
 											>
-												{e.arrivalData ? e.arrivalData.name : "Arrival"}
+												{e.arrivalData ? e.arrivalData.icao : "Arrival"}
 											</Text>
 											<Image source={Arrival} style={styles.sideIcon} />
 											<Text
@@ -538,19 +548,35 @@ export class SearchFlight extends React.Component {
 												]}
 											>
 												{e.arrivalData
-													? e.arrivalData.city
-													: "TAP TO SELECT AIRPORT"}
+													? e.arrivalData.name
+													: "TAP TO\nSELECT\nAIRPORT"}
 											</Text>
 											{e.arrivalData && (
 												<Text
 													style={[
+														styles.neTxt,
 														{ color: "#FFF" },
 														e.arrivalData && { color: "#000" },
 													]}
 												>
-													{e.arrivalData
-														? e.arrivalData.icao
-														: "TAP TO SELECT AIRPORT"}
+													{e.arrivalData.city}
+													{/* {e.arrivalData
+														? e.arrivalData.city
+														: "TAP TO\nSELECT\nAIRPORT"} */}
+												</Text>
+											)}
+											{e.arrivalData && (
+												<Text
+													style={[
+														styles.neTxt,
+														{ color: "#FFF" },
+														e.arrivalData && { color: "#000" },
+													]}
+												>
+													{e.arrivalData.country}
+													{/* {e.arrivalData
+														? e.arrivalData.country
+														: "TAP TO\nSELECT\nAIRPORT"} */}
 												</Text>
 											)}
 										</Button>
@@ -804,20 +830,20 @@ export class SearchFlight extends React.Component {
 							/>
 						)}
 
-						{this.props.airport_list && (
+						{/* {this.props.airport_list && ( */}
 							<FlatList
-								data={this.props.airport_list}
+								data={this.props.airport_list ? this.props.airport_list : [] }
 								style={{ marginTop: 20, zIndex: 99 }}
 								renderItem={renderItem}
-								refreshControl={
+								/* refreshControl={
 									<RefreshControl
 										refreshing={this.state.refresh}
 										title="Test"
 									/>
-								}
+								} */
 								keyExtractor={(item) => item.id}
 							/>
-						)}
+						{/* )} */}
 					</KeyboardAvoidingView>
 				</BottomSheet>
 
@@ -888,7 +914,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#DDD",
 		padding: 10,
-		margin: 2,
+		margin: 1,
 		borderRadius: 5,
 		backgroundColor: "#8B8B8B",
 	},
@@ -899,14 +925,16 @@ const styles = StyleSheet.create({
 	colortxt: {
 		color: "#FFF",
 		fontSize: 19,
+		fontWeight: "700",
 		textTransform: "uppercase",
+		marginBottom: 5
 	},
 	sideIcon: {
 		position: "absolute",
-		right: 0,
-		width: 50,
-		top: 0,
-		height: 50,
+		right: 5,
+		width: 35,
+		top: 5,
+		height: 35,
 	},
 	smImg: {
 		fontSize: 12,
@@ -920,7 +948,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#3d3d3d",
 		width: "100%",
 		height: Dimensions.get("window").height - 20,
-		padding: 20,
+		padding: 10,
 	},
 	fboxIcon: {
 		alignItems: "center",
@@ -1000,10 +1028,12 @@ const styles = StyleSheet.create({
 		backgroundColor: "#FFF",
 	},
 	neTxt: {
-		marginTop: 15,
+		fontSize: 10,
+		marginTop: 2,
 		color: "#FFF",
-		marginBottom: 5,
+		marginBottom: 0,
 		width: 100,
+		fontWeight: "500"
 	},
 });
 

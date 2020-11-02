@@ -22,7 +22,7 @@ export   function Application(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#3d3d3d"
   }
 });
 

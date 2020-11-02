@@ -45,16 +45,8 @@ export class Home extends React.Component {
 		this.props.getDealHome();
 	}
 
-	selectDate = (item, fromico, toico, time, from, to) => {
-		console.log("select list");
-		/* console.log("hey");
-		console.log("hey", item);
-		console.log("hey", fromico);
-		console.log("hey", toico);
-		console.log("hey", time);
-		console.log("hey", from);
-		console.log("hey", to); */
-		this.setState(
+	selectDate = async (item, fromico, toico, time, from, to) => {
+		await this.setState(
 			{
 				fromico,
 				time,
@@ -73,12 +65,7 @@ export class Home extends React.Component {
 		this.setState({
 			issearching: true,
 		});
-		// console.log()
 		const { fromico, time, toico, price, from, to, item, date } = this.state;
-		// console.log(arrivalData)
-		// console.log(departureData)
-		// console.log("search data = ", item);
-		// console.log("search data = ", this.state);
 		var data = {
 			segments: [],
 		};
@@ -219,8 +206,8 @@ export class Home extends React.Component {
 				</View>
 				<Image style={styles.returnImg} source={returnImg} />
 				<View style={styles.flightboxImg}>
-					<Image style={styles.flightImgBox} source={leftFlightBox} />
-					<Image style={styles.flightImgBox} source={rightFlightBox} />
+					<Image style={styles.flightImgBox} source={{uri: item.fromimage}} />
+					<Image style={styles.flightImgBox} source={{uri: item.toimage}} />
 				</View>
 			</TouchableOpacity>
 		);
@@ -312,7 +299,7 @@ export class Home extends React.Component {
 				{this.props.homedeal && (
 					<FlatList
 						data={this.props.homedeal.deals}
-						style={{ marginTop: 20 }}
+						style={{ backgroundColor: "#3d3d3d" }}
 						renderItem={renderItem}
 						keyExtractor={(item) => item.id}
 					/>
@@ -341,13 +328,13 @@ export class Home extends React.Component {
 
 						<View style={[styles.flightBox, { backgroundColor: "#FFF" }]}>
 							<View style={styles.flightTextBox}>
-								<Text>{this.state.fromico}</Text>
-								<Text>{this.state.toico}</Text>
+								<Text>{this.state.from}</Text>
+								<Text>{this.state.to}</Text>
 							</View>
 							<Image style={styles.returnImg} source={returnImg} />
 							<View style={styles.flightboxImg}>
-								<Image style={styles.flightImgBox} source={leftFlightBox} />
-								<Image style={styles.flightImgBox} source={rightFlightBox} />
+								<Image style={styles.flightImgBox} source={{uri : this.state.item ? this.state.item.fromimage : ""}} />
+								<Image style={styles.flightImgBox} source={{uri : this.state.item ? this.state.item.toimage : ""}} />
 							</View>
 						</View>
 						{this.state.issearching && (
@@ -436,13 +423,18 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	returnImg: {
-		width: 62,
-		height: 32,
+		width: 38,
+		height: 25,
 		alignSelf: "center",
-		marginTop: -16,
+		marginTop: -14,
+		borderRadius: 10,
 	},
 	flightBox: {
-		padding: 10,
+		paddingHorizontal: 10,
+		marginVertical: 1,
+		marginHorizontal: 2,
+		backgroundColor: "#fff",
+		borderRadius: 5
 	},
 	flightImgBox: {
 		width: 134,
