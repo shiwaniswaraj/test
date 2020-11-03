@@ -97,8 +97,10 @@ class Login extends React.Component {
 						EMCJET is an Indirect Air Carrier and does not own, maintain, or
 						operate aircraft.{" "}
 					</Text>
-					<Text style={styles.textCommon}>
-						the
+					<View style={[ {flexDirection: "row", justifyContent: "center", alignItems: "center"}]}>
+						<Text style={styles.textCommon}>
+							The{" "}
+						</Text>
 						<TouchableOpacity
 								onPress={() => {
 									this.props.navigation.navigate("WebView", {
@@ -107,20 +109,22 @@ class Login extends React.Component {
 									});
 								}}
 							>
-								<Text style={{ color: "#D8343B" }}>Terms of Use </Text>
-							</TouchableOpacity>
-							and
-							<TouchableOpacity
-								onPress={() => {
-									this.props.navigation.navigate("WebView", {
-										title: "Privacy Policy",
-										uri: "http://emc.webdemotest.com/cmspage/privacy.php",
-									});
-								}}
-							>
-								<Text style={{ color: "#D8343B" }}> Privacy Policy</Text>
-							</TouchableOpacity>
-					</Text>
+								<Text style={{ color: "#D8343B" }}>Terms of Use</Text>
+						</TouchableOpacity>
+						<Text style={styles.textCommon}>
+							{` and `}
+						</Text>
+						<TouchableOpacity
+							onPress={() => {
+								this.props.navigation.navigate("WebView", {
+									title: "Privacy Policy",
+									uri: "http://emc.webdemotest.com/cmspage/privacy.php",
+								});
+							}}
+						>
+							<Text style={{ color: "#D8343B" }}>Privacy Policy</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			</View>
 		);

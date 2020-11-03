@@ -8,6 +8,7 @@ import {
 	Dimensions,
 	ActivityIndicator,
 	SegmentedControlIOS,
+	Linking,
 } from "react-native";
 import Text from "@components/Text";
 import plane from "@assets/images/plane.png";
@@ -156,10 +157,10 @@ export class Home extends React.Component {
 		};
 		data.segments.push({
 			startAirport: {
-				icao: item.fromicao
+				icao: item.fromicao,
 			},
 			endAirport: {
-				icao: item.toicao
+				icao: item.toicao,
 			},
 			dateTime: {
 				date: moment(item.date).format("YYYY-MM-DD"),
@@ -180,8 +181,7 @@ export class Home extends React.Component {
 			price: item.price,
 			data: JSON.stringify(data),
 		});
-
-	}
+	};
 
 	render() {
 		const { navigation } = this.props;
@@ -206,8 +206,8 @@ export class Home extends React.Component {
 				</View>
 				<Image style={styles.returnImg} source={returnImg} />
 				<View style={styles.flightboxImg}>
-					<Image style={styles.flightImgBox} source={{uri: item.fromimage}} />
-					<Image style={styles.flightImgBox} source={{uri: item.toimage}} />
+					<Image style={styles.flightImgBox} source={{ uri: item.fromimage }} />
+					<Image style={styles.flightImgBox} source={{ uri: item.toimage }} />
 				</View>
 			</TouchableOpacity>
 		);
@@ -215,31 +215,37 @@ export class Home extends React.Component {
 
 		const ItemCar = ({ item }) => {
 			return (
-			<View
-				style={{
-					flex: 1,
-					alignItems: "center",
-					justifyContent: "center",
-					paddingTop: 50,
-				}}
-			>
 				<View
-					style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+					style={{
+						flex: 1,
+						alignItems: "center",
+						justifyContent: "center",
+						paddingTop: 50,
+					}}
 				>
-					<Text style={styles.smText}>{new Date(item.date).toDateString()}</Text>
-					<View style={styles.mainBot}>
-						<Text style={styles.headingText}>{item.from}</Text>
-						<Image style={styles.planeImage} source={plane} />
-						<Text style={styles.headingText}>{item.to}</Text>
-					</View>
-					<TouchableOpacity style={styles.button} onPress={() => this.sliderAction(item)}>
-						<View style={styles.btnPrice}>
-							<Text>${item.price}/SEAT</Text>
+					<View
+						style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+					>
+						<Text style={styles.smText}>
+							{new Date(item.date).toDateString()}
+						</Text>
+						<View style={styles.mainBot}>
+							<Text style={styles.headingText}>{item.from}</Text>
+							<Image style={styles.planeImage} source={plane} />
+							<Text style={styles.headingText}>{item.to}</Text>
 						</View>
-					</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.button}
+							onPress={() => this.sliderAction(item)}
+						>
+							<View style={styles.btnPrice}>
+								<Text>${item.price}/SEAT</Text>
+							</View>
+						</TouchableOpacity>
+					</View>
 				</View>
-			</View>
-		)};
+			);
+		};
 
 		return (
 			<View style={styles.container}>
@@ -252,7 +258,14 @@ export class Home extends React.Component {
 							style={{ width: 50, height: 30 }}
 							resizeMode="contain"
 						/>
-						<Image source={phone} style={{ width: 30, height: 30 }} />
+						<TouchableOpacity
+							style={{zIndex: 99}}
+							onPress={() => {
+								Linking.openURL(`tel:+1123456789`);
+							}}
+						>
+							<Image source={phone} style={{ width: 30, height: 30 }} />
+						</TouchableOpacity>
 					</View>
 
 					{this.props.homedeal && (
@@ -333,8 +346,18 @@ export class Home extends React.Component {
 							</View>
 							<Image style={styles.returnImg} source={returnImg} />
 							<View style={styles.flightboxImg}>
-								<Image style={styles.flightImgBox} source={{uri : this.state.item ? this.state.item.fromimage : ""}} />
-								<Image style={styles.flightImgBox} source={{uri : this.state.item ? this.state.item.toimage : ""}} />
+								<Image
+									style={styles.flightImgBox}
+									source={{
+										uri: this.state.item ? this.state.item.fromimage : "",
+									}}
+								/>
+								<Image
+									style={styles.flightImgBox}
+									source={{
+										uri: this.state.item ? this.state.item.toimage : "",
+									}}
+								/>
 							</View>
 						</View>
 						{this.state.issearching && (
@@ -434,7 +457,7 @@ const styles = StyleSheet.create({
 		marginVertical: 1,
 		marginHorizontal: 2,
 		backgroundColor: "#fff",
-		borderRadius: 5
+		borderRadius: 5,
 	},
 	flightImgBox: {
 		width: 134,

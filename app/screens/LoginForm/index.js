@@ -109,7 +109,7 @@ class LoginForm extends React.Component {
 				this.loginIfHavePrams(token);
 			}
 		});
-		alert("token = " + this.state.token);
+		//alert("token = " + this.state.token);
     //this.props.hideLoadingGlobal();
 		if (this.props.isLoggedin) {
 			this.props.navigation.navigate("Home");

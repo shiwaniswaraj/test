@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Platform, ScrollView,TouchableOpacity } from "react-native";
+import {
+	StyleSheet,
+	View,
+	Platform,
+	ScrollView,
+	TouchableOpacity,
+} from "react-native";
 import Input from "@components/Input";
 import Button from "@components/Button";
 import Text from "@components/Text";
@@ -122,7 +128,7 @@ class Register extends React.Component {
 			city,
 			userstate,
 			pincode,
-			terms
+			terms,
 		} = this.state;
 
 		if (!email || !this.checkEmail(email)) {
@@ -281,8 +287,7 @@ class Register extends React.Component {
 
 					<View style={{ flexDirection: "row", marginTop: 10, width: "90%" }}>
 						<CheckBox
-							tintColors="#fff"
-							tintColor="#fff"
+							tintColors={{ true: "#D8343B", false: "#fff" }}
 							style={{ alignSelf: "center" }}
 							disabled={false}
 							value={this.state.terms}
@@ -291,28 +296,30 @@ class Register extends React.Component {
 						<Text style={{ marginTop: 8, color: "#fff" }}>
 							By accessing this application and using services provided by
 							EMCJET, You agree to the
-							<TouchableOpacity
-								onPress={() => {
-									this.props.navigation.navigate("WebView", {
-										title: "Terms of Use",
-										uri: "http://emc.webdemotest.com/cmspage/terms.php",
-									});
-								}}
-							>
-								<Text style={{ color: "#D8343B" }}>Terms of Use </Text>
-							</TouchableOpacity>
-							and
-							<TouchableOpacity
-								onPress={() => {
-									this.props.navigation.navigate("WebView", {
-										title: "Privacy Policy",
-										uri: "http://emc.webdemotest.com/cmspage/privacy.php",
-									});
-								}}
-							>
-								<Text style={{ color: "#D8343B" }}> Privacy Policy</Text>
-							</TouchableOpacity>
 						</Text>
+					</View>
+					<View style={{ flexDirection: "row", marginLeft: 30 }}>
+						<TouchableOpacity
+							onPress={() => {
+								this.props.navigation.navigate("WebView", {
+									title: "Terms of Use",
+									uri: "http://emc.webdemotest.com/cmspage/terms.php",
+								});
+							}}
+						>
+							<Text style={{ color: "#D8343B" }}>Terms of Use </Text>
+						</TouchableOpacity>
+						<Text style={{color: "#fff"}}>and</Text>
+						<TouchableOpacity
+							onPress={() => {
+								this.props.navigation.navigate("WebView", {
+									title: "Privacy Policy",
+									uri: "http://emc.webdemotest.com/cmspage/privacy.php",
+								});
+							}}
+						>
+							<Text style={{ color: "#D8343B" }}> Privacy Policy</Text>
+						</TouchableOpacity>
 					</View>
 					<View style={styles.btnBase}>
 						<Button
