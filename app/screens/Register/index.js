@@ -294,8 +294,8 @@ class Register extends React.Component {
 							<TouchableOpacity
 								onPress={() => {
 									this.props.navigation.navigate("WebView", {
-										title: "License Notice",
-										uri: "http://emc.webdemotest.com/cmspage/licence.php",
+										title: "Terms of Use",
+										uri: "http://emc.webdemotest.com/cmspage/terms.php",
 									});
 								}}
 							>
@@ -305,8 +305,8 @@ class Register extends React.Component {
 							<TouchableOpacity
 								onPress={() => {
 									this.props.navigation.navigate("WebView", {
-										title: "License Notice",
-										uri: "http://emc.webdemotest.com/cmspage/licence.php",
+										title: "Privacy Policy",
+										uri: "http://emc.webdemotest.com/cmspage/privacy.php",
 									});
 								}}
 							>
