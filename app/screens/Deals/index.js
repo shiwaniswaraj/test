@@ -37,6 +37,10 @@ export class Deals extends React.Component {
 		});
 	}
 
+	componentDidUpdate() {
+		console.log("list= ",this.props.aircraft_list);
+	}
+
 	render() {
 		const { data, endAirport, startAirport, time, date, price } = this.state;
 		const Item = ({ item }) => (
@@ -51,6 +55,7 @@ export class Deals extends React.Component {
 						to: endAirport,
 						from: startAirport,
 						date,
+						flighttimes: item.flighttimes
 					});
 				}}
 			>

@@ -40,7 +40,7 @@ export class DealsInner extends React.Component {
 	};
 	componentDidMount() {
 		const { route } = this.props;
-		const { id, from, to, time, date, item, data, price } = route.params;
+		const { id, from, to, time, date, item, data, price, flighttimes } = route.params;
 		this.setState({
 			id,
 			from,
@@ -50,6 +50,7 @@ export class DealsInner extends React.Component {
 			item,
 			price,
 			data: JSON.parse(data),
+			flighttimes
 		});
 		console.log("deals inner data = ",data);
 		this.props.flightDetails(id);
@@ -163,6 +164,7 @@ export class DealsInner extends React.Component {
 					</View>
 
 					{data.segments.map((e) => {
+						console.log("flieght detail = ", e);
 						return (
 							<View style={styles.whiteBottomInner}>
 								<View
@@ -254,7 +256,7 @@ export class DealsInner extends React.Component {
 									<Image source={iconPlane} style={styles.incoPLane} />
 									<View style={styles.rightbot}>
 										<Text style={{ color: "red", fontSize: 19 }}>
-											{e.dateTime.time}
+											{moment(`${e.dateTime.date} ${e.dateTime.time}:00`).add(parseInt(this.props.route.params.flighttimes), 'minutes').format("hh:mm")}
 										</Text>
 										<Text style={{ fontSize: 10 }}>
 											{moment(e.dateTime.date).format("MMM Do YY")}
