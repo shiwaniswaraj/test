@@ -29,6 +29,9 @@ export class EditProfile extends React.Component {
 		city: "",
 		userstate: "",
 		pincode: "",
+		uploadedImage: "",
+		image: "",
+		result: "",
 	};
 	async componentDidMount() {
 		const { id } = this.props.data;
@@ -37,8 +40,8 @@ export class EditProfile extends React.Component {
 		await this.props.getProfile(id);
 
 		this.setState({
+			uploadedImage: profiledata.image,
 			name: profiledata.name,
-			image: profiledata.image,
 			email: profiledata.email,
 			tel: profiledata.countrycode + profiledata.phonenumber,
 			txtcountrycode: profiledata.txtcountrycode,
@@ -66,7 +69,6 @@ export class EditProfile extends React.Component {
 			quality: 1,
 		});
 
-		console.log(result);
 		if (!result.cancelled) {
 			this.setState({
 				image: result.uri,
@@ -97,7 +99,6 @@ export class EditProfile extends React.Component {
 		let {
 			name,
 			email,
-			image,
 			ccode,
 			tel,
 			result,
@@ -122,15 +123,27 @@ export class EditProfile extends React.Component {
 			userstate,
 			pincode,
 			id: profiledata.id,
+			result,
 		};
 		await this.props.save(dataToSend);
-		// await this.props.getProfile(id);
-		// this.setState({
-		//   name:profiledata.name,
-		//   lname:profiledata.lname,
-		//   email:profiledata.email,
-		//   tel:"+"+profiledata.countrycode+profiledata.phonenumber,
-		// })
+		await this.props.getProfile(profiledata.id)
+		.then((res) => {
+			if (res.data.status == 200) {
+				let userData = res.data.data;
+				this.setState({
+					uploadedImage: userData.image,
+					name: userData.name,
+					email: userData.email,
+					tel: userData.countrycode + userData.phonenumber,
+					txtcountrycode: userData.txtcountrycode,
+					ccode: userData.countrycode,
+					address: userData.address,
+					city: userData.city,
+					userstate: userData.state,
+					pincode: userData.pincode,
+				});
+			}
+		});
 	};
 
 	render() {
@@ -151,10 +164,17 @@ export class EditProfile extends React.Component {
 										}}
 										style={styles.logo}
 									>
-										<Image
-											source={{ uri: this.state.image }}
-											style={styles.logoImg}
-										/>
+										{Boolean(this.state.image) && Boolean(this.state.result) ? (
+											<Image
+												source={{ uri: this.state.image }}
+												style={styles.logoImg}
+											/>
+										) : (
+											<Image
+												source={{ uri: this.state.uploadedImage }}
+												style={styles.logoImg}
+											/>
+										)}
 									</TouchableOpacity>
 
 									<Image source={homeSlide} style={styles.image} />
@@ -222,10 +242,9 @@ export class EditProfile extends React.Component {
 									<View style={{ flexDirection: "row" }}>
 										<PickerInput
 											style={{
-												marginTop: 15,
+												marginTop: 25,
 												zIndex: 99,
 												position: "absolute",
-												top: 5,
 											}}
 											changeCountry={this.changeCountry}
 											countryCode={this.state.txtcountrycode}

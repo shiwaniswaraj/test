@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Image, FlatList } from "react-native";
-import logoMsg from "@assets/images/logoMsg.png";
+import logoMsg from "@assets/icon.png";
 import Text from "@components/Text";
 import { connect } from "react-redux";
 import { Getmessagebycustomerid } from "../../redux/action/auth";

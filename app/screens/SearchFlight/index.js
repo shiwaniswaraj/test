@@ -12,13 +12,15 @@ import {
 	RefreshControl,
 	ActivityIndicator,
 	SafeAreaView,
+	TouchableOpacity,
 } from "react-native";
 import Button from "@components/Button";
 import Text from "@components/Text";
 import Arrival from "@assets/images/arival.png";
+import ArrivalDark from "@assets/images/arival-dark.png";
 import Departure from "@assets/images/departure.png";
+import DepartureDark from "@assets/images/departure-dark.png";
 import { BottomSheet } from "react-native-btr";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -491,7 +493,7 @@ export class SearchFlight extends React.Component {
 											>
 												{e.departureData ? e.departureData.icao : "Departure"}
 											</Text>
-											<Image source={Departure} style={styles.sideIcon} />
+											<Image source={e.departureData ? DepartureDark : Departure} style={styles.sideIcon} />
 											<Text
 												style={[
 													styles.neTxt,
@@ -540,7 +542,7 @@ export class SearchFlight extends React.Component {
 											>
 												{e.arrivalData ? e.arrivalData.icao : "Arrival"}
 											</Text>
-											<Image source={Arrival} style={styles.sideIcon} />
+											<Image source={e.arrivalData ? ArrivalDark : Arrival} style={styles.sideIcon} />
 											<Text
 												style={[
 													styles.neTxt,
@@ -686,19 +688,20 @@ export class SearchFlight extends React.Component {
 						<View style={styles.boxInner}>
 							<View style={[styles.fbox, styles.fboxIcon]}>
 								<View style={[styles.icontwo, styles.iconHolder]}>
-									<View style={{ flex: 1 }}>
-										<TouchableOpacity onPress={this.addReturn}>
-											<Text style={styles.iconText}>
-												Return{" "}
-												<FontAwesome
-													style={styles.inconNew}
-													name="undo"
-													size={14}
-													color="white"
-												/>
-											</Text>
-										</TouchableOpacity>
-									</View>
+									<TouchableOpacity
+										onPress={this.addReturn}
+										style={{ flex: 1, alignItems: "center" }}
+									>
+										<Text style={styles.iconText}>
+											Return{" "}
+											<FontAwesome
+												style={styles.inconNew}
+												name="undo"
+												size={14}
+												color="white"
+											/>
+										</Text>
+									</TouchableOpacity>
 									{/* <View
 									onStartShouldSetResponder={() => {
 										this.addLeg();
@@ -803,7 +806,8 @@ export class SearchFlight extends React.Component {
 								label="Search Departure"
 								value={this.state.search}
 								icon={iconFlight}
-								editable={!this.props.isSearching}
+								//editable={!this.props.isSearching}
+								editable={true}
 								onChangeText={(val) => {
 									this.handleTextChange("search", val);
 								}}
@@ -814,7 +818,8 @@ export class SearchFlight extends React.Component {
 							<SearchInput
 								label="Search Arrival"
 								icon={flightDown}
-								editable={!this.props.isSearching}
+								//editable={!this.props.isSearching}
+								editable={true}
 								value={this.state.search}
 								onChangeText={(val) => {
 									this.handleTextChange("search", val);
@@ -829,21 +834,18 @@ export class SearchFlight extends React.Component {
 								color="#FFF"
 							/>
 						)}
-
-						{/* {this.props.airport_list && ( */}
-							<FlatList
-								data={this.props.airport_list ? this.props.airport_list : [] }
-								style={{ marginTop: 20, zIndex: 99 }}
-								renderItem={renderItem}
-								/* refreshControl={
+						<FlatList
+							data={this.props.airport_list ? this.props.airport_list : []}
+							style={{ marginTop: 20, zIndex: 99 }}
+							renderItem={renderItem}
+							/* refreshControl={
 									<RefreshControl
 										refreshing={this.state.refresh}
 										title="Test"
 									/>
 								} */
-								keyExtractor={(item) => item.id}
-							/>
-						{/* )} */}
+							keyExtractor={(item) => item.id}
+						/>
 					</KeyboardAvoidingView>
 				</BottomSheet>
 
@@ -927,7 +929,7 @@ const styles = StyleSheet.create({
 		fontSize: 19,
 		fontWeight: "700",
 		textTransform: "uppercase",
-		marginBottom: 5
+		marginBottom: 5,
 	},
 	sideIcon: {
 		position: "absolute",
@@ -1033,7 +1035,7 @@ const styles = StyleSheet.create({
 		color: "#FFF",
 		marginBottom: 0,
 		width: 100,
-		fontWeight: "500"
+		fontWeight: "500",
 	},
 });
 

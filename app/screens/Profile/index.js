@@ -59,9 +59,13 @@ export class Profile extends React.Component {
 			<View style={styles.container}>
 				{profiledata && (
 					<View style={styles.main}>
-						<Image source={logoCircle} style={styles.logo} />
+						{ profiledata.image ? (
+							<Image source={{uri: profiledata.image}} style={styles.logo} />
+						) : (
+							<Image source={logoCircle} style={styles.logo} />
+						) }
 						<Text style={styles.name}>
-							{profiledata.fname} {profiledata.lname}
+							{profiledata.name}
 						</Text>
 						<Image source={homeSlide} style={styles.image} />
 					</View>

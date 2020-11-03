@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import backgroundLogin from "@assets/images/backgroundlogin.jpg";
 import logo from "@assets/images/logo.png";
 import Button from "@components/Button";
@@ -8,8 +8,6 @@ import Link from "@components/Link";
 import { connect } from "react-redux";
 import { changeData } from "../../redux/action/auth";
 import AsyncStorage from "@react-native-community/async-storage";
-
-import { TouchableOpacity } from "react-native-gesture-handler";
 class Login extends React.Component {
 	async componentDidMount() {
 		const unsubscribe = this.props.navigation.addListener("focus", () => {
@@ -100,7 +98,28 @@ class Login extends React.Component {
 						operate aircraft.{" "}
 					</Text>
 					<Text style={styles.textCommon}>
-						the <Link>Terms of Use</Link> and the <Link>Privacy Policy</Link>
+						the
+						<TouchableOpacity
+								onPress={() => {
+									this.props.navigation.navigate("WebView", {
+										title: "License Notice",
+										uri: "http://emc.webdemotest.com/cmspage/licence.php",
+									});
+								}}
+							>
+								<Text style={{ color: "#D8343B" }}>Terms of Use </Text>
+							</TouchableOpacity>
+							and
+							<TouchableOpacity
+								onPress={() => {
+									this.props.navigation.navigate("WebView", {
+										title: "License Notice",
+										uri: "http://emc.webdemotest.com/cmspage/licence.php",
+									});
+								}}
+							>
+								<Text style={{ color: "#D8343B" }}> Privacy Policy</Text>
+							</TouchableOpacity>
 					</Text>
 				</View>
 			</View>

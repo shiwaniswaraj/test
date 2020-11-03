@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Platform, ScrollView } from "react-native";
+import { StyleSheet, View, Platform, ScrollView,TouchableOpacity } from "react-native";
 import Input from "@components/Input";
 import Button from "@components/Button";
 import Text from "@components/Text";
@@ -10,6 +10,7 @@ import Constants from "expo-constants";
 import { connect } from "react-redux";
 import { CheckEmailMobile } from "../../redux/action/auth";
 import PickerInput from "@components/CountryPicker";
+import CheckBox from "@react-native-community/checkbox";
 
 class Register extends React.Component {
 	state = {
@@ -23,6 +24,7 @@ class Register extends React.Component {
 		city: "",
 		userstate: "",
 		pincode: "",
+		terms: false,
 	};
 	handleTextChange = (id, value) => this.setState({ [id]: value });
 	handleTelChange = (id, value) => {
@@ -120,6 +122,7 @@ class Register extends React.Component {
 			city,
 			userstate,
 			pincode,
+			terms
 		} = this.state;
 
 		if (!email || !this.checkEmail(email)) {
@@ -148,6 +151,9 @@ class Register extends React.Component {
 			return;
 		} else if (!pincode) {
 			this.notify("Please enter pincode", "danger");
+			return;
+		} else if (!terms) {
+			this.notify("Please agree Term and Condition", "danger");
 			return;
 		}
 
@@ -272,6 +278,42 @@ class Register extends React.Component {
 					<Text style={{ fontSize: 10, color: "#FFF", marginTop: 15 }}>
 						We will send you an SMS to ensure the phone number is valid
 					</Text>
+
+					<View style={{ flexDirection: "row", marginTop: 10, width: "90%" }}>
+						<CheckBox
+							tintColors="#fff"
+							tintColor="#fff"
+							style={{ alignSelf: "center" }}
+							disabled={false}
+							value={this.state.terms}
+							onValueChange={(newValue) => this.setState({ terms: newValue })}
+						/>
+						<Text style={{ marginTop: 8, color: "#fff" }}>
+							By accessing this application and using services provided by
+							EMCJET, You agree to the
+							<TouchableOpacity
+								onPress={() => {
+									this.props.navigation.navigate("WebView", {
+										title: "License Notice",
+										uri: "http://emc.webdemotest.com/cmspage/licence.php",
+									});
+								}}
+							>
+								<Text style={{ color: "#D8343B" }}>Terms of Use </Text>
+							</TouchableOpacity>
+							and
+							<TouchableOpacity
+								onPress={() => {
+									this.props.navigation.navigate("WebView", {
+										title: "License Notice",
+										uri: "http://emc.webdemotest.com/cmspage/licence.php",
+									});
+								}}
+							>
+								<Text style={{ color: "#D8343B" }}> Privacy Policy</Text>
+							</TouchableOpacity>
+						</Text>
+					</View>
 					<View style={styles.btnBase}>
 						<Button
 							onPress={() => {

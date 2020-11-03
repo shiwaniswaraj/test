@@ -229,9 +229,8 @@ export const GetProfile = (id) => {
 		data.append("id_customer", id);
 		dispatch({ type: "showloading", paylod: true });
 
-		CALL_API("post", "Customer/getcustomerprofile", data)
+		return await CALL_API("post", "Customer/getcustomerprofile", data)
 			.then((res) => {
-				console.log(res);
 				if (res.data.status == 200) {
 					dispatch({ type: PROFILE, paylod: res.data.data });
 					notify(res.data.message, "success");
@@ -241,9 +240,11 @@ export const GetProfile = (id) => {
 				setTimeout(() => {
 					dispatch({ type: "hideloading", paylod: true });
 				}, 1000);
+				return res;
 			})
 			.catch((err) => {
 				dispatch({ type: "hideloading", paylod: true });
+				return err;
 			});
 	};
 };
@@ -295,8 +296,23 @@ export const SaveProfile = (dataToSend) => {
 			ccode,
 			tel,
 			txtcountrycode,
+			result,
 		} = dataToSend;
 		var data = new FormData();
+
+		if (Boolean(result)) {
+			let { uri } = result;
+			let uriParts = uri.split(".");
+			let fileType = uriParts[uriParts.length - 1];
+			data.append("image", {
+				uri,
+				name: `profile.${fileType}`,
+				type: `image/${fileType}`,
+			});
+		} else {
+			data.append("image", "");
+		}
+
 		data.append("action", "editprofile");
 		data.append("name", name);
 		data.append("id_customer", id);
@@ -308,7 +324,7 @@ export const SaveProfile = (dataToSend) => {
 		data.append("state", userstate);
 		data.append("pincode", pincode);
 		data.append("txtcountrycode", txtcountrycode);
-		data.append("image", "");
+
 		dispatch({ type: "showloading", paylod: true });
 		console.log("before call = ");
 		await CALL_API("post", "Customer/editprofile", data)
