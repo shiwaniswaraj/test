@@ -256,10 +256,11 @@ export class DealsInner extends React.Component {
 									<Image source={iconPlane} style={styles.incoPLane} />
 									<View style={styles.rightbot}>
 										<Text style={{ color: "red", fontSize: 19 }}>
-											{moment(`${e.dateTime.date} ${e.dateTime.time}:00`).add(parseInt(this.props.route.params.flighttimes), 'minutes').format("hh:mm")}
+											{moment(`${e.dateTime.date} ${e.dateTime.time}:00`, "YYYY-MM-DD HH:mm:ss").add(parseInt(this.props.route.params.flighttimes), 'minutes').format("HH:mm")}
 										</Text>
 										<Text style={{ fontSize: 10 }}>
-											{moment(e.dateTime.date).format("MMM Do YY")}
+										{moment(`${e.dateTime.date} ${e.dateTime.time}:00`, "YYYY-MM-DD HH:mm:ss").add(parseInt(this.props.route.params.flighttimes), 'minutes').format("MMM Do YY")}
+											{/* {moment(e.dateTime.date).format("MMM Do YY")} */}
 										</Text>
 									</View>
 								</View>

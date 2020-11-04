@@ -16,7 +16,7 @@ import Constants from "expo-constants";
 import { connect } from "react-redux";
 import { CheckEmailMobile } from "../../redux/action/auth";
 import PickerInput from "@components/CountryPicker";
-import CheckBox from "@react-native-community/checkbox";
+import { CheckBox } from "native-base";
 
 class Register extends React.Component {
 	state = {
@@ -285,20 +285,21 @@ class Register extends React.Component {
 						We will send you an SMS to ensure the phone number is valid
 					</Text>
 
-					<View style={{ flexDirection: "row", marginTop: 10, width: "90%" }}>
+					<View style={{ flexDirection: "row", marginTop: 10, width: Platform.OS === 'ios' ? "80%" : "95%" }}>
 						<CheckBox
-							tintColors={{ true: "#D8343B", false: "#fff" }}
-							style={{ alignSelf: "center" }}
-							disabled={false}
-							value={this.state.terms}
-							onValueChange={(newValue) => this.setState({ terms: newValue })}
+							style={{ marginTop: 15 }}
+							checked={this.state.terms}
+							color="#D8343B"
+							onPress={() => {
+								this.setState({ terms: !this.state.terms });
+							}}
 						/>
-						<Text style={{ marginTop: 8, color: "#fff" }}>
+						<Text style={{ marginTop: 0, marginLeft: 20, color: "#fff" }}>
 							By accessing this application and using services provided by
 							EMCJET, You agree to the
 						</Text>
 					</View>
-					<View style={{ flexDirection: "row", marginLeft: 30 }}>
+					<View style={{ flexDirection: "row", marginLeft: 40 }}>
 						<TouchableOpacity
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
@@ -309,7 +310,7 @@ class Register extends React.Component {
 						>
 							<Text style={{ color: "#D8343B" }}>Terms of Use </Text>
 						</TouchableOpacity>
-						<Text style={{color: "#fff"}}>and</Text>
+						<Text style={{ color: "#fff" }}>and</Text>
 						<TouchableOpacity
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
