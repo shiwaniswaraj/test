@@ -16,10 +16,12 @@ import * as ImagePicker from "expo-image-picker";
 import { connect } from "react-redux";
 import { GetProfile, SaveProfile } from "../../redux/action/auth";
 import PickerInput from "@components/CountryPicker";
-
+import { Icon, Picker } from "native-base";
+import usStateList from "@assets/us-states.json";
 export class EditProfile extends React.Component {
 	state = {
-		name: "",
+		fname: "",
+		lname: "",
 		email: "",
 		tel: "",
 		ccode: "",
@@ -41,7 +43,8 @@ export class EditProfile extends React.Component {
 
 		this.setState({
 			uploadedImage: profiledata.image,
-			name: profiledata.name,
+			fname: profiledata.fname,
+			lname: profiledata.lname,
 			email: profiledata.email,
 			tel: profiledata.countrycode + profiledata.phonenumber,
 			txtcountrycode: profiledata.txtcountrycode,
@@ -97,7 +100,8 @@ export class EditProfile extends React.Component {
 	saveProfile = async () => {
 		const { profiledata } = this.props;
 		let {
-			name,
+			fname,
+			lname,
 			email,
 			ccode,
 			tel,
@@ -113,7 +117,8 @@ export class EditProfile extends React.Component {
 		tel = tel.startsWith(ccode) ? tel.replace(ccode, "") : tel;
 
 		const dataToSend = {
-			name,
+			fname,
+			lname,
 			email,
 			ccode,
 			tel,
@@ -126,13 +131,13 @@ export class EditProfile extends React.Component {
 			result,
 		};
 		await this.props.save(dataToSend);
-		await this.props.getProfile(profiledata.id)
-		.then((res) => {
+		await this.props.getProfile(profiledata.id).then((res) => {
 			if (res.data.status == 200) {
 				let userData = res.data.data;
 				this.setState({
 					uploadedImage: userData.image,
-					name: userData.name,
+					fname: userData.fname,
+					lname: userData.lname,
 					email: userData.email,
 					tel: userData.countrycode + userData.phonenumber,
 					txtcountrycode: userData.txtcountrycode,
@@ -182,10 +187,18 @@ export class EditProfile extends React.Component {
 
 								<View style={styles.listMain}>
 									<Input
-										label="Name"
-										value={this.state.name}
+										label="First Name"
+										value={this.state.fname}
 										onChangeText={(val) => {
-											this.handleTextChange("name", val);
+											this.handleTextChange("fname", val);
+										}}
+										black
+									/>
+									<Input
+										label="Last Name"
+										value={this.state.lname}
+										onChangeText={(val) => {
+											this.handleTextChange("lname", val);
 										}}
 										black
 									/>
@@ -219,7 +232,7 @@ export class EditProfile extends React.Component {
 										autoCapitalize="none"
 									/>
 
-									<Input
+									{/* <Input
 										label="State"
 										value={this.state.userstate}
 										onChangeText={(val) => {
@@ -227,7 +240,40 @@ export class EditProfile extends React.Component {
 										}}
 										black
 										autoCapitalize="none"
-									/>
+									/> */}
+									<View
+										style={{
+											borderBottomWidth: 1,
+											borderBottomColor: "#707070",
+											paddingVertical: 3,
+										}}
+									>
+										<Picker
+											mode="dropdown"
+											iosIcon={
+												<Icon name="arrow-down" style={{ color: "black" }} />
+											}
+											style={{
+												width: "100%",
+												color: "#000",
+												marginLeft: -5
+											}}
+											placeholder="Select your state"
+											placeholderStyle={{ color: "#FFF" }}
+											placeholderIconColor="#FFF"
+											selectedValue={this.state.userstate}
+											onValueChange={(selected) => {
+												this.setState({ userstate: selected });
+											}}
+										>
+											<Picker.Item label={"Select your state"} value={""} />
+											{usStateList.map((item, indx) => {
+												return (
+													<Picker.Item key={indx} label={item.name} value={item.name} />
+												);
+											})}
+										</Picker>
+									</View>
 
 									<Input
 										label="Pincode"
@@ -237,6 +283,7 @@ export class EditProfile extends React.Component {
 										}}
 										black
 										autoCapitalize="none"
+										keyboardType="number-pad"
 									/>
 
 									<View style={{ flexDirection: "row" }}>

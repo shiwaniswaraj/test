@@ -19,7 +19,6 @@ export class Deals extends React.Component {
 	async componentDidMount() {
 		const { route } = this.props;
 		const { data } = route.params;
-		console.log("componete did mount deals = ", data, this.props);
 		this.setState({
 			data,
 			endAirport: JSON.parse(data).segments[0].endAirport,
@@ -31,14 +30,9 @@ export class Deals extends React.Component {
 	UNSAFE_componentWillMount() {
 		const { route } = this.props;
 		const { data } = route.params;
-		console.log("componete will mount deals = ", data, this.props);
 		const unsubscribe = this.props.navigation.addListener("focus", () => {
 			this.props.searchFlight(data);
 		});
-	}
-
-	componentDidUpdate() {
-		console.log("list= ",this.props.aircraft_list);
 	}
 
 	render() {
@@ -136,7 +130,7 @@ export class Deals extends React.Component {
 					>
 						{/* <Text style={{fontSize:11,marginRight:10}}>WHOLE AIRCRAFT</Text> */}
 						<Text style={{ color: "red", fontSize: 24 }}>
-							${item.sellerprice.price}
+							${item.sellerprice.price}/<Text style={{fontSize: 16}}>SEAT</Text>
 						</Text>
 					</View>
 				</View>

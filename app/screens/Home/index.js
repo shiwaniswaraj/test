@@ -75,14 +75,14 @@ export class Home extends React.Component {
 				icao: fromico,
 				id: item.fromairportid,
 				name: from,
-				longitude: item.fromlongitude,
+				longitute: item.fromlongitude,
 				latitude: item.fromlatitude,
 			},
 			endAirport: {
 				icao: toico,
 				id: item.toairportid,
 				name: to,
-				longitude: item.tolatitude,
+				longitute: item.tolatitude,
 				latitude: item.tolatitude,
 			},
 			dateTime: {
@@ -95,6 +95,7 @@ export class Home extends React.Component {
 			paxCount: "1",
 			paxSegment: true,
 			price: price,
+			outputCurrencies: ["USD"]
 		});
 		//console.log(JSON.stringify(data));
 		await this.props.resetAircraft();
@@ -135,7 +136,6 @@ export class Home extends React.Component {
 	};
 
 	dateSelect = (date, price) => {
-		console.log("date select", date, price);
 		this.setState(
 			{
 				date,
@@ -158,9 +158,15 @@ export class Home extends React.Component {
 		data.segments.push({
 			startAirport: {
 				icao: item.fromicao,
+				latitude: item.fromlatitude,
+				longitute: item.fromlongitude,
+				name: item.from
 			},
 			endAirport: {
 				icao: item.toicao,
+				latitude: item.tolatitude,
+				longitute: item.tolongitude,
+				name: item.to
 			},
 			dateTime: {
 				date: moment(item.date).format("YYYY-MM-DD"),
@@ -171,6 +177,7 @@ export class Home extends React.Component {
 			paxCount: "1",
 			paxSegment: true,
 			price: item.price,
+			outputCurrencies: ["USD"]
 		});
 		await this.props.resetAircraft();
 		this.props.navigation.navigate("Deals", {

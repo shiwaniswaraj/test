@@ -17,7 +17,7 @@ import iconCalendar from "@assets/images/iconCalendar.png";
 import arrowAngle from "@assets/images/arrowAngle.png";
 import chair from "@assets/images/chair.png";
 import clockBlack from "@assets/images/clockBlack.png";
-import MapView from "react-native-maps";
+import MapView, { Polyline, Marker } from "react-native-maps";
 import moment from "moment";
 import { connect } from "react-redux";
 import { flightDetails, book } from "../../redux/action/flight";
@@ -31,16 +31,28 @@ import {
 } from "@shankarmorwal/rn-viewpager";
 import { BottomSheet } from "react-native-btr";
 import { color } from "react-native-reanimated";
+var momentDurationFormatSetup = require("moment-duration-format");
+momentDurationFormatSetup(moment);
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export class DealsInner extends React.Component {
 	state = {
-        visible: false,
-        currentMap: "DEPARTURE"
+		visible: false,
+		currentMap: "DEPARTURE",
 	};
 	componentDidMount() {
 		const { route } = this.props;
-		const { id, from, to, time, date, item, data, price, flighttimes } = route.params;
+		const {
+			id,
+			from,
+			to,
+			time,
+			date,
+			item,
+			data,
+			price,
+			flighttimes,
+		} = route.params;
 		this.setState({
 			id,
 			from,
@@ -50,20 +62,27 @@ export class DealsInner extends React.Component {
 			item,
 			price,
 			data: JSON.parse(data),
-			flighttimes
+			flighttimes,
 		});
-		console.log("deals inner data = ",data);
+		console.log("deals inner data = ", data);
 		this.props.flightDetails(id);
 		//this.toggle();
 	}
 	toggle = (mapType) => {
-        console.log("maptype = ", mapType);
-        this.setState({currentMap: mapType});
-        this.setState({ visible: !this.state.visible });
-    }
+		this.setState({ currentMap: mapType });
+		this.setState({ visible: !this.state.visible });
+	};
 
 	componentDidUpdate() {
-		console.log("details = ", this.props);
+		let tempData = JSON.parse(this.props.route.params.data);
+		console.log(
+			"data = ",
+			parseFloat(tempData.segments[0].endAirport.latitude)
+		);
+		console.log(
+			"data = ",
+			parseFloat(tempData.segments[0].endAirport.longitute)
+		);
 	}
 
 	book = async () => {
@@ -128,7 +147,7 @@ export class DealsInner extends React.Component {
 			<View style={styles.item}>
 				<Carousel
 					ref={(ref) => (this.carouselRef = ref)}
-					data={title.lift.photos}
+					data={Array.isArray(title.lift.photos) ? title.lift.photos : []}
 					renderItem={({ item }) => <ItemCar item={item} />}
 					sliderWidth={SCREEN_WIDTH}
 					itemWidth={SCREEN_WIDTH}
@@ -143,7 +162,7 @@ export class DealsInner extends React.Component {
 						{ borderBottomWidth: 1, borderBottomColor: "#000" },
 					]}
 				>
-					{data.segments.map((e, i) => {
+					{/* {data.segments.map((e, i) => {
 						return (
 							<View key={i} style={styles.whiteBottomInner}>
 								<Image style={styles.pin} source={pin} />
@@ -154,7 +173,7 @@ export class DealsInner extends React.Component {
 								<Text>{e.endAirport.icao}</Text>
 							</View>
 						);
-					})}
+					})} */}
 					<View style={styles.whiteBottomInner}>
 						<Image style={styles.pin} source={iconPlane} />
 						<Text>{title.lift.aircraftCategory} </Text>
@@ -163,10 +182,9 @@ export class DealsInner extends React.Component {
 						</Text>
 					</View>
 
-					{data.segments.map((e) => {
-						console.log("flieght detail = ", e);
+					{data.segments.map((e, fDetailIndx) => {
 						return (
-							<View style={styles.whiteBottomInner}>
+							<View key={fDetailIndx} style={styles.whiteBottomInner}>
 								<View
 									style={{
 										flex: 1,
@@ -203,7 +221,8 @@ export class DealsInner extends React.Component {
 									<View style={{ flexDirection: "row", alignItems: "center" }}>
 										{item && (
 											<Text style={{ color: "red" }}>
-												{item.sellerprice.currency} {item.sellerprice.price}
+												${item.sellerprice.price}/
+												<Text style={{ fontSize: 10 }}>SEAT</Text>
 											</Text>
 										)}
 									</View>
@@ -213,179 +232,274 @@ export class DealsInner extends React.Component {
 					})}
 				</View>
 
-				<View
-					style={[
-						styles.whiteBottom,
-						{ borderBottomWidth: 1, borderBottomColor: "#000" },
-					]}
-				>
-					{data.segments.map((e) => {
+				<View style={[{ borderBottomWidth: 1, borderBottomColor: "#000" }]}>
+					{data.segments.map((e, indx) => {
 						return (
-							<View style={[styles.whiteBottomInner]}>
-								<View style={styles.botwrap}>
-									<View style={styles.lefbot}>
-										<Text style={{ color: "red", fontSize: 19 }}>
-											{e.startAirport.icao}
-										</Text>
-										<Text style={{ fontSize: 10 }}>{e.startAirport.name}</Text>
-									</View>
-									<Image source={iconPlane} style={styles.incoPLane} />
-									<View style={styles.rightbot}>
-										<Text style={{ color: "red", fontSize: 19 }}>
-											{e.endAirport.icao}
-										</Text>
-										<Text style={{ fontSize: 10 }}>{e.endAirport.name}</Text>
+							<View key={indx} style={{ borderRadius: 10, borderWidth: 2 }}>
+								{/* airport departure and arrival */}
+								<View
+									style={[
+										styles.whiteBottomInner,
+										{ paddingHorizontal: 20, backgroundColor: "#FFF" },
+									]}
+								>
+									<View style={styles.botwrap}>
+										<View style={styles.lefbot}>
+											<Text style={{ color: "red", fontSize: 19 }}>
+												{e.startAirport.icao}
+											</Text>
+											<Text style={{ fontSize: 10 }}>
+												{e.startAirport.name}
+											</Text>
+										</View>
+										<Image source={iconPlane} style={styles.incoPLane} />
+										<View style={styles.rightbot}>
+											<Text style={{ color: "red", fontSize: 19 }}>
+												{e.endAirport.icao}
+											</Text>
+											<Text style={{ fontSize: 10 }}>{e.endAirport.name}</Text>
+										</View>
 									</View>
 								</View>
-							</View>
-						);
-					})}
+								{/* airport departure and arrival over */}
 
-					{data.segments.map((e) => {
-						return (
-							<View style={[styles.whiteBottomInner]}>
-								<View style={styles.botwrap}>
-									<View style={styles.lefbot}>
-										<Text style={{ color: "red", fontSize: 19 }}>
-											{e.dateTime.time}
-										</Text>
-										<Text style={{ fontSize: 10 }}>
-											{moment(e.dateTime.date).format("MMM Do YY")}
-										</Text>
-									</View>
-									<Image source={iconPlane} style={styles.incoPLane} />
-									<View style={styles.rightbot}>
-										<Text style={{ color: "red", fontSize: 19 }}>
-											{moment(`${e.dateTime.date} ${e.dateTime.time}:00`, "YYYY-MM-DD HH:mm:ss").add(parseInt(this.props.route.params.flighttimes), 'minutes').format("HH:mm")}
-										</Text>
-										<Text style={{ fontSize: 10 }}>
-										{moment(`${e.dateTime.date} ${e.dateTime.time}:00`, "YYYY-MM-DD HH:mm:ss").add(parseInt(this.props.route.params.flighttimes), 'minutes').format("MMM Do YY")}
-											{/* {moment(e.dateTime.date).format("MMM Do YY")} */}
-										</Text>
+								{/* time departure and arrival */}
+								<View
+									style={[
+										styles.whiteBottomInner,
+										{ paddingHorizontal: 20, backgroundColor: "#FFF" },
+									]}
+								>
+									<View style={styles.botwrap}>
+										<View style={styles.lefbot}>
+											<Text style={{ color: "red", fontSize: 19 }}>
+												{e.dateTime.time}
+											</Text>
+											<Text style={{ fontSize: 10 }}>
+												{moment(e.dateTime.date).format("MMM Do YY")}
+											</Text>
+										</View>
+										<Image source={iconPlane} style={styles.incoPLane} />
+										<View style={styles.rightbot}>
+											<Text style={{ color: "red", fontSize: 19 }}>
+												{moment(
+													`${e.dateTime.date} ${e.dateTime.time}:00`,
+													"YYYY-MM-DD HH:mm:ss"
+												)
+													.add(
+														parseInt(this.props.route.params.flighttimes),
+														"minutes"
+													)
+													.format("HH:mm")}
+											</Text>
+											<Text style={{ fontSize: 10 }}>
+												{moment(
+													`${e.dateTime.date} ${e.dateTime.time}:00`,
+													"YYYY-MM-DD HH:mm:ss"
+												)
+													.add(
+														parseInt(this.props.route.params.flighttimes),
+														"minutes"
+													)
+													.format("MMM Do YY")}
+												{/* {moment(e.dateTime.date).format("MMM Do YY")} */}
+											</Text>
+										</View>
 									</View>
 								</View>
+								{/* time departure and arrival over */}
+
+								{/* mapviews */}
+								<View
+									style={[
+										styles.whiteBottom,
+										{
+											borderBottomWidth: 1,
+											borderBottomColor: "#000",
+											borderTopWidth: 1,
+											borderTopColor: "#000",
+											flexDirection: "row",
+											padding: 0,
+											paddingVertical: 0,
+										},
+									]}
+								>
+									{/* <TouchableOpacity onPress={(e) => this.toggle('DEPARTURE')}> */}
+									<View
+										style={[
+											styles.whiteBottomInner,
+											{
+												flex: 1,
+												flexDirection: "column",
+												paddingVertical: 0,
+												paddingBottom: 0,
+												borderRightColor: "#000",
+												borderRightWidth: 1,
+											},
+										]}
+									>
+										<View style={{ flexDirection: "row", padding: 10 }}>
+											<Image style={styles.pin} source={pin} />
+											<Text>DEPARTURE</Text>
+										</View>
+										<MapView
+											initialRegion={{
+												latitude: parseFloat(e.startAirport.latitude),
+												longitude: parseFloat(e.startAirport.longitute),
+												latitudeDelta: 0.0922,
+												longitudeDelta: 0.0421,
+											}}
+											style={styles.mapStyle}
+										>
+											<Marker
+												coordinate={{
+													latitude: parseFloat(e.startAirport.latitude),
+													longitude: parseFloat(e.startAirport.longitute),
+												}}
+												title={e.startAirport.icao}
+												description={e.startAirport.name}
+											/>
+											<Marker
+												coordinate={{
+													latitude: parseFloat(e.endAirport.latitude),
+													longitude: parseFloat(e.endAirport.longitute),
+												}}
+												title={e.endAirport.icao}
+												description={e.endAirport.name}
+											/>
+											<Polyline
+												strokeWidth={2}
+												strokeColor="red"
+												coordinates={[
+													{
+														latitude: parseFloat(e.startAirport.latitude),
+														longitude: parseFloat(e.startAirport.longitute),
+													},
+													{
+														latitude: parseFloat(e.endAirport.latitude),
+														longitude: parseFloat(e.endAirport.longitute),
+													},
+												]}
+											/>
+										</MapView>
+									</View>
+									{/* </TouchableOpacity>
+															<TouchableOpacity onPress={(e) => this.toggle('ARRIVAL')}> */}
+									<View
+										style={[
+											styles.whiteBottomInner,
+											{
+												flex: 1,
+												flexDirection: "column",
+												paddingVertical: 0,
+												paddingBottom: 0,
+											},
+										]}
+									>
+										<View style={{ flexDirection: "row", padding: 10 }}>
+											<Image style={styles.pin} source={pin} />
+											<Text>ARRIVAL</Text>
+										</View>
+										<MapView
+											initialRegion={{
+												latitude: parseFloat(e.endAirport.latitude),
+												longitude: parseFloat(e.endAirport.longitute),
+												latitudeDelta: 0.0922,
+												longitudeDelta: 0.0421,
+											}}
+											style={styles.mapStyle}
+										>
+											<Marker
+												coordinate={{
+													latitude: parseFloat(e.startAirport.latitude),
+													longitude: parseFloat(e.startAirport.longitute),
+												}}
+												title={e.startAirport.icao}
+												description={e.startAirport.name}
+											/>
+											<Marker
+												coordinate={{
+													latitude: parseFloat(e.endAirport.latitude),
+													longitude: parseFloat(e.endAirport.longitute),
+												}}
+												title={e.endAirport.icao}
+												description={e.endAirport.name}
+											/>
+											<Polyline
+												strokeWidth={2}
+												strokeColor="red"
+												coordinates={[
+													{
+														latitude: parseFloat(e.endAirport.latitude),
+														longitude: parseFloat(e.endAirport.longitute),
+													},
+													{
+														latitude: parseFloat(e.startAirport.latitude),
+														longitude: parseFloat(e.startAirport.longitute),
+													},
+												]}
+											/>
+										</MapView>
+									</View>
+									{/* </TouchableOpacity> */}
+								</View>
+								{/* mapviews over */}
+
+								{/* flight seates and flight time */}
+								<View
+									style={[
+										styles.whiteBottom,
+										{ borderBottomWidth: 1, borderBottomColor: "#000" },
+									]}
+								>
+									<View
+										style={[styles.whiteBottomInner, { flexDirection: "row" }]}
+									>
+										<View
+											style={{
+												justifyContent: "center",
+												alignItems: "center",
+												flex: 1,
+											}}
+										>
+											<Text style={{ textTransform: "uppercase" }}>
+												seats selected
+											</Text>
+											<View style={{ flexDirection: "row", marginTop: 10 }}>
+												<Image source={chair} style={styles.chair} />
+												<Text style={{ color: "red" }}>{e.paxCount}</Text>
+											</View>
+										</View>
+										<View
+											style={{
+												justifyContent: "center",
+												alignItems: "center",
+												flex: 1,
+											}}
+										>
+											<Text style={{ textTransform: "uppercase" }}>
+												FLIGHT TIME
+											</Text>
+											<View style={{ flexDirection: "row", marginTop: 10 }}>
+												<Image source={clockBlack} style={styles.chair} />
+												<Text style={{ color: "red" }}>
+													{moment
+														.duration(
+															this.props.route.params.flighttimes,
+															"minutes"
+														)
+														.format("HH:mm")}
+													{/* {e.dateTime.time} */}
+												</Text>
+											</View>
+										</View>
+									</View>
+								</View>
+								{/* flight seates and flight time over */}
 							</View>
 						);
 					})}
 				</View>
-
-				{data.segments.map((e) => {
-					return (
-						<View
-							style={[
-								styles.whiteBottom,
-								{
-									borderBottomWidth: 1,
-									borderBottomColor: "#000",
-									flexDirection: "row",
-									padding: 0,
-									paddingVertical: 0,
-								},
-							]}
-						>
-                            {/* <TouchableOpacity onPress={(e) => this.toggle('DEPARTURE')}> */}
-							<View
-								style={[
-									styles.whiteBottomInner,
-									{
-										flex: 1,
-										flexDirection: "column",
-										paddingVertical: 0,
-										paddingBottom: 0,
-										borderRightColor: "#000",
-										borderRightWidth: 1,
-									},
-								]}
-							>
-								<View style={{ flexDirection: "row", padding: 10 }}>
-									<Image style={styles.pin} source={pin} />
-									<Text>DEPARTURE</Text>
-								</View>
-								<MapView
-									initialRegion={{
-										latitude: parseFloat(Boolean(e.startAirport.latitude) ? e.startAirport.latitude : 0),
-										longitude: parseFloat(Boolean(e.startAirport.longitude) ? e.startAirport.longitude : 0),
-										latitudeDelta: 0.0922,
-										longitudeDelta: 0.0421,
-									}}
-									style={styles.mapStyle}
-								/>
-							</View>
-                            {/* </TouchableOpacity>
-                            <TouchableOpacity onPress={(e) => this.toggle('ARRIVAL')}> */}
-							<View
-								style={[
-									styles.whiteBottomInner,
-									{
-										flex: 1,
-										flexDirection: "column",
-										paddingVertical: 0,
-										paddingBottom: 0,
-									},
-								]}
-							>
-								<View style={{ flexDirection: "row", padding: 10 }}>
-									<Image style={styles.pin} source={pin} />
-									<Text>ARRIVAL</Text>
-								</View>
-								<MapView
-									initialRegion={{
-										latitude: parseFloat(Boolean(e.endAirport.latitude) ? e.endAirport.latitude : 0),
-										longitude: parseFloat(Boolean(e.endAirport.longitude) ? e.endAirport.latitude : 0),
-										latitudeDelta: 0.0922,
-										longitudeDelta: 0.0421,
-									}}
-									style={styles.mapStyle}
-								/>
-							</View>
-                            {/* </TouchableOpacity> */}
-						</View>
-					);
-				})}
-
-				{data.segments.map((e) => {
-					return (
-						<View
-							style={[
-								styles.whiteBottom,
-								{ borderBottomWidth: 1, borderBottomColor: "#000" },
-							]}
-						>
-							<View style={[styles.whiteBottomInner, { flexDirection: "row" }]}>
-								<View
-									style={{
-										justifyContent: "center",
-										alignItems: "center",
-										flex: 1,
-									}}
-								>
-									<Text style={{ textTransform: "uppercase" }}>
-										seats selected
-									</Text>
-									<View style={{ flexDirection: "row", marginTop: 10 }}>
-										<Image source={chair} style={styles.chair} />
-										<Text style={{ color: "red" }}>{e.paxCount}</Text>
-									</View>
-								</View>
-								<View
-									style={{
-										justifyContent: "center",
-										alignItems: "center",
-										flex: 1,
-									}}
-								>
-									<Text style={{ textTransform: "uppercase" }}>
-										FLIGHT TIME
-									</Text>
-									<View style={{ flexDirection: "row", marginTop: 10 }}>
-										<Image source={clockBlack} style={styles.chair} />
-										<Text style={{ color: "red" }}>{e.dateTime.time}</Text>
-									</View>
-								</View>
-							</View>
-						</View>
-					);
-				})}
 
 				<View style={[styles.barBottom, { backgroundColor: "#000" }]}>
 					<Text style={{ color: "#FFF", textAlign: "left" }}>

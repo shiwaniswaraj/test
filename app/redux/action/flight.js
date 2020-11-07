@@ -51,7 +51,6 @@ export const searchAirport2 = (search) => {
 		dispatch({ type: "seaerchingAirpot", paylod: true });
 
 		await CALL_API("post", "Airpot/Getairpot2", data).then((res) => {
-			console.log("airport data  = = = = ", res);
 
 			if (res.data.status == 200) {
 				dispatch({ type: AIRPORT_SEARCH, paylod: res.data.data });
@@ -70,7 +69,6 @@ export const searchFlight = (data) => {
 	return async (dispatch, getState) => {
 		var fromdata = new FormData();
 		fromdata.append("data", data);
-		console.log("search flight formdata = ", data);
 		dispatch({ type: "showloading", paylod: true });
 		// dispatch({type:AIRCRAFT_LIST,paylod:null});
 

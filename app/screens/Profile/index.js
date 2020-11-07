@@ -14,6 +14,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { connect } from "react-redux";
 import { GetProfile, logoutAction } from "../../redux/action/auth";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Icon } from "native-base";
 
 export class Profile extends React.Component {
 	constructor(props) {
@@ -52,6 +53,10 @@ export class Profile extends React.Component {
 		await this.props.getProfile(id);
 	}
 
+	componentDidUpdate() {
+		//console.log("profile update = ", this.props.profiledata.image.match(/\.(jpeg|jpg|gif|png)$/));
+	}
+
 	render() {
 		const { navigation, profiledata } = this.props;
 
@@ -59,13 +64,13 @@ export class Profile extends React.Component {
 			<View style={styles.container}>
 				{profiledata && (
 					<View style={styles.main}>
-						{ profiledata.image ? (
-							<Image source={{uri: profiledata.image}} style={styles.logo} />
+						{Boolean(profiledata.image) && profiledata.image.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+							<Image source={{ uri: profiledata.image }} style={styles.logo} />
 						) : (
 							<Image source={logoCircle} style={styles.logo} />
-						) }
+						)}
 						<Text style={styles.name}>
-							{profiledata.name}
+							{`${profiledata.fname} ${profiledata.lname}`}
 						</Text>
 						<Image source={homeSlide} style={styles.image} />
 					</View>
@@ -78,7 +83,8 @@ export class Profile extends React.Component {
 								navigation.navigate("EditProfile");
 							}}
 						>
-							<Image source={edit} style={styles.iconImg} />
+							{/* <Image source={edit} style={styles.iconImg} /> */}
+							<Icon type="Entypo" name='v-card' style={styles.iconImg} />
 							<Text>Edit profile</Text>
 						</View>
 						<View
@@ -87,7 +93,8 @@ export class Profile extends React.Component {
 								navigation.navigate("ChangePassword");
 							}}
 						>
-							<Image source={shield} style={styles.iconImg} />
+							{/* <Image source={shield} style={styles.iconImg} /> */}
+							<Icon type="Entypo" name='key' style={styles.iconImg} />
 							<Text>Change Password</Text>
 						</View>
 						<TouchableOpacity
@@ -99,7 +106,8 @@ export class Profile extends React.Component {
 							}}
 							style={styles.list}
 						>
-							<Image source={edit} style={styles.iconImg} />
+							{/* <Image source={edit} style={styles.iconImg} /> */}
+							<Icon type="Entypo" name='info-with-circle' style={styles.iconImg} />
 							<Text>About</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -111,7 +119,8 @@ export class Profile extends React.Component {
 							}}
 							style={styles.list}
 						>
-							<Image source={faq} style={styles.iconImg} />
+							{/* <Image source={faq} style={styles.iconImg} /> */}
+							<Icon type="Entypo" name='help-with-circle' style={styles.iconImg} />
 							<Text>F.A.Q</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -123,7 +132,8 @@ export class Profile extends React.Component {
 							}}
 							style={styles.list}
 						>
-							<Image source={familyInsurance} style={styles.iconImg} />
+							{/* <Image source={familyInsurance} style={styles.iconImg} /> */}
+							<Icon type="Entypo" name='news' style={styles.iconImg} />
 							<Text>Legal</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -135,7 +145,8 @@ export class Profile extends React.Component {
 							}}
 							style={styles.list}
 						>
-							<Image source={insurance} style={styles.iconImg} />
+							{/* <Image source={insurance} style={styles.iconImg} /> */}
+							<Icon type="Entypo" name='shield' style={styles.iconImg} />
 							<Text>License Notice</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -144,7 +155,8 @@ export class Profile extends React.Component {
 							}}
 							style={styles.list}
 						>
-							<Image source={logout} style={styles.iconImg} />
+							{/* <Image source={logout} style={styles.iconImg} /> */}
+							<Icon type="Entypo" name='log-out' style={styles.iconImg} />
 							<Text>Log out</Text>
 						</TouchableOpacity>
 					</View>
@@ -199,10 +211,10 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	iconImg: {
-		width: 25,
-		height: 25,
+		/* width: 25,
+		height: 25, */
 		marginRight: 10,
-		resizeMode: "contain",
+		//resizeMode: "contain",
 	},
 });
 

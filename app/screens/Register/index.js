@@ -9,14 +9,14 @@ import {
 import Input from "@components/Input";
 import Button from "@components/Button";
 import Text from "@components/Text";
-import { Toast } from "native-base";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { connect } from "react-redux";
 import { CheckEmailMobile } from "../../redux/action/auth";
 import PickerInput from "@components/CountryPicker";
-import { CheckBox } from "native-base";
+import { Icon, Toast, CheckBox, Picker } from "native-base";
+import usStateList from "@assets/us-states.json";
 
 class Register extends React.Component {
 	state = {
@@ -25,10 +25,11 @@ class Register extends React.Component {
 		tel: "+1",
 		ccode: "1",
 		txtcountrycode: "US",
-		name: "",
+		fname: "",
+		lname: "",
 		address: "",
 		city: "",
-		userstate: "",
+		userstate: undefined,
 		pincode: "",
 		terms: false,
 	};
@@ -123,7 +124,8 @@ class Register extends React.Component {
 			tel,
 			token,
 			txtcountrycode,
-			name,
+			fname,
+			lname,
 			address,
 			city,
 			userstate,
@@ -140,11 +142,17 @@ class Register extends React.Component {
 		} else if (!tel) {
 			this.notify("Please enter phone number!", "danger");
 			return;
+		} else if (tel.length <= 10) {
+			this.notify("Please enter correct phone number", "danger");
+			return;
 		} else if (!ccode) {
 			this.notify("Please enter country code!", "danger");
 			return;
-		} else if (!name) {
-			this.notify("Please enter name", "danger");
+		} else if (!fname) {
+			this.notify("Please enter first name", "danger");
+			return;
+		} else if (!lname) {
+			this.notify("Please enter last name", "danger");
 			return;
 		} else if (!address) {
 			this.notify("Please enter address", "danger");
@@ -157,6 +165,9 @@ class Register extends React.Component {
 			return;
 		} else if (!pincode) {
 			this.notify("Please enter pincode", "danger");
+			return;
+		} else if (isNaN(pincode)) {
+			this.notify("Please enter only digits", "danger");
 			return;
 		} else if (!terms) {
 			this.notify("Please agree Term and Condition", "danger");
@@ -172,7 +183,8 @@ class Register extends React.Component {
 			ccode,
 			tel,
 			txtcountrycode,
-			name,
+			fname,
+			lname,
 			address,
 			city,
 			userstate,
@@ -197,10 +209,18 @@ class Register extends React.Component {
 			<View style={styles.container}>
 				<ScrollView>
 					<Input
-						label="Name"
-						value={this.state.name}
+						label="First Name"
+						value={this.state.fname}
 						onChangeText={(val) => {
-							this.handleTextChange("name", val);
+							this.handleTextChange("fname", val);
+						}}
+					/>
+
+					<Input
+						label="Last Name"
+						value={this.state.lname}
+						onChangeText={(val) => {
+							this.handleTextChange("lname", val);
 						}}
 					/>
 
@@ -240,14 +260,50 @@ class Register extends React.Component {
 						autoCapitalize="none"
 					/>
 
-					<Input
+					{/* <Input
 						label="State"
 						value={this.state.userstate}
 						onChangeText={(val) => {
 							this.handleTextChange("userstate", val);
 						}}
 						autoCapitalize="none"
-					/>
+					/> */}
+
+					<View
+						style={{
+							borderBottomWidth: 1,
+							borderBottomColor: "#707070",
+							paddingVertical: 3,
+						}}
+					>
+						<Picker
+							mode="dropdown"
+							iosIcon={<Icon name="arrow-down" style={{ color: "#fff" }} />}
+							style={{
+								width: "100%",
+								color: "#FFF",
+								marginLeft: Platform.OS === "android" ? -5 : 0,
+							}}
+							placeholder="Select your state"
+							placeholderStyle={{ color: "#FFF" }}
+							placeholderIconColor="#FFF"
+							selectedValue={this.state.userstate}
+							onValueChange={(selected) => {
+								this.setState({ userstate: selected });
+							}}
+						>
+							<Picker.Item
+								style={{ color: "#FFF" }}
+								label={"Select your state"}
+								value={undefined}
+							/>
+							{usStateList.map((item, indx) => {
+								return (
+									<Picker.Item key={indx} label={item.name} value={item.name} />
+								);
+							})}
+						</Picker>
+					</View>
 
 					<Input
 						label="Pincode"
@@ -256,6 +312,7 @@ class Register extends React.Component {
 							this.handleTextChange("pincode", val);
 						}}
 						autoCapitalize="none"
+						keyboardType="numeric"
 					/>
 
 					<View style={{ flexDirection: "row" }}>
@@ -285,7 +342,13 @@ class Register extends React.Component {
 						We will send you an SMS to ensure the phone number is valid
 					</Text>
 
-					<View style={{ flexDirection: "row", marginTop: 10, width: Platform.OS === 'ios' ? "80%" : "95%" }}>
+					<View
+						style={{
+							flexDirection: "row",
+							marginTop: 10,
+							width: Platform.OS === "ios" ? "80%" : "95%",
+						}}
+					>
 						<CheckBox
 							style={{ marginTop: 15 }}
 							checked={this.state.terms}

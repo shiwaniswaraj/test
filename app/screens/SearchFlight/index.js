@@ -73,9 +73,11 @@ export class SearchFlight extends React.Component {
 				departureData: e.arrivalData,
 				arrivalData: e.departureData,
 				key: e.key + 1,
-				time: e.time,
 				pax: e.pax,
-				date: e.date,
+				// time: e.time,
+				time: "",
+				// date: e.date,
+				date: "",
 				isreturning: true,
 			};
 			returningTicket.push(temp);
@@ -174,7 +176,7 @@ export class SearchFlight extends React.Component {
 			await this.props.searchAirport2(value);
 		}
 
-		console.log(this.props.airport_list);
+		//console.log(this.props.airport_list);
 	};
 
 	refresh = () => {
@@ -216,8 +218,6 @@ export class SearchFlight extends React.Component {
 				}
 			);
 		}
-
-		// console.log(item);
 	};
 
 	dateSelect = (date, price) => {
@@ -317,14 +317,14 @@ export class SearchFlight extends React.Component {
 					icao: e.departureData.icao,
 					id: e.departureData.id,
 					name: e.departureData.name,
-					longitude: e.departureData.longitude,
+					longitute: e.departureData.longitute,
 					latitude: e.departureData.latitude,
 				},
 				endAirport: {
 					icao: e.arrivalData.icao,
 					id: e.arrivalData.id,
 					name: e.arrivalData.name,
-					longitude: e.arrivalData.longitude,
+					longitute: e.arrivalData.longitute,
 					latitude: e.arrivalData.latitude,
 				},
 				dateTime: {
@@ -336,10 +336,10 @@ export class SearchFlight extends React.Component {
 				paxCount: e.pax,
 				paxSegment: true,
 				price: "100",
+				outputCurrencies: ["USD"]
 			});
 		});
 
-		// console.log(data);
 		this.props.navigation.navigate("Deals", {
 			title: "Search Result",
 			data: JSON.stringify(data),

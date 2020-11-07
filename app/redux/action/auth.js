@@ -86,7 +86,8 @@ export const RegisterAction = (registerData) => {
 		tel,
 		token,
 		txtcountrycode,
-		name,
+		fname,
+		lname,
 		address,
 		city,
 		userstate,
@@ -102,7 +103,8 @@ export const RegisterAction = (registerData) => {
 		data.append("phonenumber", tel);
 		data.append("devicetoken", token);
 		data.append("txtcountrycode", txtcountrycode);
-		data.append("name", name);
+		data.append("fname", fname);
+		data.append("lname", lname);
 		data.append("address", address);
 		data.append("city", city);
 		data.append("state", userstate);
@@ -286,7 +288,8 @@ export const passChange = (
 export const SaveProfile = (dataToSend) => {
 	return async (dispatch, getState) => {
 		let {
-			name,
+			fname,
+			lname,
 			email,
 			address,
 			city,
@@ -314,7 +317,8 @@ export const SaveProfile = (dataToSend) => {
 		}
 
 		data.append("action", "editprofile");
-		data.append("name", name);
+		data.append("fname", fname);
+		data.append("lname", lname);
 		data.append("id_customer", id);
 		data.append("email", email);
 		data.append("countrycode", ccode);
