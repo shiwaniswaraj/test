@@ -1,7 +1,8 @@
 import { AIRPORT_SEARCH,AIRCRAFT_LIST,AIRCRAFT_DETAIL,TRIPS,BOOKING,PRICECAL } from '../action/flight';
 const initState = {
   loading:false,
-  price_cal:[]
+  price_cal:[],
+  flightLoading: false
 }
 
 const reducer = (state = initState, action) => {
@@ -35,6 +36,11 @@ const reducer = (state = initState, action) => {
           return{
             ...state,
             loading:false
+          }
+          case "flightLoading":
+          return{
+            ...state,
+            flightLoading:action.paylod
           }
         case TRIPS:
           return {

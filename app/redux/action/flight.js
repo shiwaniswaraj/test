@@ -69,12 +69,12 @@ export const searchFlight = (data) => {
 	return async (dispatch, getState) => {
 		var fromdata = new FormData();
 		fromdata.append("data", data);
-		dispatch({ type: "showloading", paylod: true });
+		dispatch({ type: "flightLoading", paylod: true });
 		// dispatch({type:AIRCRAFT_LIST,paylod:null});
 
 		return await CALL_API("post", "Airpot/Searchaircarft", fromdata)
 			.then((res) => {
-				dispatch({ type: "hideloading", paylod: true });
+				dispatch({ type: "flightLoading", paylod: false });
 
 				if (res.data.status == 200) {
 					dispatch({ type: AIRCRAFT_LIST, paylod: res.data.data });
@@ -87,7 +87,7 @@ export const searchFlight = (data) => {
 				return "success";
 			})
 			.catch((err) => {
-				dispatch({ type: "hideloading", paylod: true });
+				dispatch({ type: "flightLoading", paylod: false });
 				return err;
 			});
 	};

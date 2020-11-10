@@ -63,7 +63,7 @@ export class Trips extends React.Component {
 
 				<View>
 					<Text style={{ color: "#000", marginTop: 10 }}>
-						Booking : #{item.bookingnumber}
+						Booking : {item.bookingnumber}
 					</Text>
 				</View>
 			</View>

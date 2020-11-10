@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const base_url="http://emc.webdemotest.com/api/";
+export const base_url="https://emc.webdemotest.com/api/";
  
 export function CALL_API(method,url,data){
 		if(data){

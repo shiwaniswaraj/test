@@ -42,7 +42,7 @@ export class Deals extends React.Component {
 	}
 
 	componentDidUpdate() {
-		console.log("state = ", this.props.loading);
+		console.log("state = ", this.props.flightLoading);
 	}
 
 	componentWillUnmount() {
@@ -155,21 +155,6 @@ export class Deals extends React.Component {
 		const { aircraft_list } = this.props;
 		return (
 			<View style={styles.container}>
-				{this.props.loading && Platform.OS == "ios" && (
-						<ActivityIndicator
-							style={{
-								position: "absolute",
-								left: 0,
-								right: 0,
-								top: -65,
-								bottom: 0,
-								alignItems: "center",
-								justifyContent: "center",
-							}}
-							size="large"
-							animating={this.props.loading}
-						/>
-				)}
 				{aircraft_list && aircraft_list.length <= 0 && (
 					<View
 						style={{
@@ -181,13 +166,31 @@ export class Deals extends React.Component {
 						<Text style={{ color: "#FFF", fontSize: 18 }}>No Result Found</Text>
 					</View>
 				)}
-				<SafeAreaView style={{ flex: 1 }}>
-					<FlatList
-						data={this.props.aircraft_list}
-						renderItem={renderItem}
-						keyExtractor={(item) => item.id}
+				{this.props.flightLoading ? (
+					<ActivityIndicator
+						style={{
+							position: "absolute",
+							left: 0,
+							right: 0,
+							top: 0,
+							bottom: 0,
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+						size="large"
+						color="#fff"
+						//animating={this.props.flightLoading}
+						animating={true}
 					/>
-				</SafeAreaView>
+				) : (
+					<SafeAreaView style={{ flex: 1 }}>
+						<FlatList
+							data={this.props.aircraft_list}
+							renderItem={renderItem}
+							keyExtractor={(item) => item.id}
+						/>
+					</SafeAreaView>
+				)}
 			</View>
 		);
 	}
@@ -239,7 +242,7 @@ const mapStateToProps = (state) => {
 	return {
 		airport_list: state.flight.airport_list,
 		aircraft_list: state.flight.aircraft_list,
-		loading: state.flight.loading,
+		flightLoading: state.flight.flightLoading,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
