@@ -86,7 +86,6 @@ export class Home extends React.Component {
 				latitude: item.tolatitude,
 			},
 			dateTime: {
-				//date: moment(Date.now()).format("YYYY-MM-DD"),
 				date: moment(date).format("YYYY-MM-DD"),
 				time: time,
 				departure: true,
@@ -97,7 +96,6 @@ export class Home extends React.Component {
 			price: price,
 			outputCurrencies: ["USD"]
 		});
-		//console.log(JSON.stringify(data));
 		await this.props.resetAircraft();
 		this.setState({
 			issearching: false,
@@ -107,7 +105,6 @@ export class Home extends React.Component {
 			to: from,
 			from: to,
 			time,
-			//date: moment(Date.now()).format("YYYY-MM-DD"),
 			date: moment(date).format("YYYY-MM-DD"),
 			price: price,
 			data: JSON.stringify(data),
@@ -144,8 +141,6 @@ export class Home extends React.Component {
 			async () => {
 				await this.toggleOverlayCal();
 				this.searchData();
-				/* setTimeout(() => {
-				}, 1000); */
 			}
 		);
 	};

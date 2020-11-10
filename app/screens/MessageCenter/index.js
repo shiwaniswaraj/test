@@ -69,11 +69,11 @@ export class MessageCenter extends React.Component {
 			>
 				<Image source={logoMsg} style={styles.logo} />
 				<View style={styles.msgCont}>
-					<Text style={styles.from}>{item.id_sender}</Text>
+					<Text style={styles.from}>{item.name}</Text>
 					<Text style={styles.msg}>{item.message}</Text>
 				</View>
 				<Text style={styles.date}>
-					{moment(item.created_date).format("DD do YYYY")}
+					{moment(item.created_date).format("DD-MM-YYYY")}
 				</Text>
 			</TouchableOpacity>
 		);

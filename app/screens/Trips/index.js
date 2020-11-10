@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Image, FlatList } from "react-native";
-import logoMsg from "@assets/images/logoMsg.png";
 import Text from "@components/Text";
 import { connect } from "react-redux";
 import { getTrip } from "../../redux/action/flight";
@@ -31,9 +30,9 @@ export class Trips extends React.Component {
 	render() {
 		const Item = ({ item }) => (
 			<View style={styles.item}>
-				{item.routedetails.map((e) => {
+				{item.routedetails.map((e, indx) => {
 					return (
-						<View style={styles.half}>
+						<View key={indx} style={styles.half}>
 							<View style={styles.box}>
 								<Text style={{ color: "#FFF", marginBottom: 10 }}>
 									DEPARTURE

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Platform, Image, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Home from "../app/screens/Home";
 import Login from "../app/screens/Login";
 import LoginForm from "../app/screens/LoginForm";
+import ForgotPassword from "../app/screens/ForgotPassword";
 import Register from "../app/screens/Register";
 import Otp from "../app/screens/Otp";
 import Profile from "../app/screens/Profile";
@@ -82,17 +83,15 @@ function HomeTabScreen(props) {
 	const [icon5Image, setIcon5Image] = useState(icon5);
 
 	useEffect(() => {
-		let icon1Data =
-			props.route.state && props.route.state.index == 0 ? icon1Red : icon1;
-		let icon2Data =
-			props.route.state && props.route.state.index == 1 ? icon2Red : icon2;
-		let icon3Data =
-			props.route.state && props.route.state.index == 2 ? icon3Red : icon3;
-		let icon4Data =
-			props.route.state && props.route.state.index == 3 ? icon4Red : icon4;
-		let icon5Data =
-			props.route.state && props.route.state.index == 4 ? icon5Red : icon5;
-		if (props.route.state != undefined) {
+		//get route name
+		let routeName = getFocusedRouteNameFromRoute(props.route);
+		// set icons
+		let icon1Data = (routeName == "Home") ? icon1Red : icon1;
+		let icon2Data = (routeName == "Screen2") ? icon2Red : icon2;
+		let icon3Data = (routeName == "Trips") ? icon3Red : icon3;
+		let icon4Data = (routeName == "Screen4") ? icon4Red : icon4;
+		let icon5Data = (routeName == "Screen5") ? icon5Red : icon5;
+		if (routeName != undefined) {
 			setIcon1Image(icon1Data);
 		}
 		setIcon2Image(icon2Data);
@@ -191,6 +190,16 @@ export default function Navigation(props) {
 						headerTitleStyle: options.headerTitleStyle,
 					}}
 					component={LoginForm}
+				/>
+				<Stack.Screen
+					name="ForgotPassword"
+					options={{
+						title: "Forgot Password",
+						headerStyle: options.headerStyle,
+						headerTintColor: options.headerTintColor,
+						headerTitleStyle: options.headerTitleStyle,
+					}}
+					component={ForgotPassword}
 				/>
 				<Stack.Screen
 					name="Otp"

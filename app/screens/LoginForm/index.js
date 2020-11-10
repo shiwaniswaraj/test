@@ -203,7 +203,7 @@ class LoginForm extends React.Component {
 					secureTextEntry={true}
 				/>
 				<View style={styles.btnBase}>
-					<Button color="#000" title="Forgot?" />
+					<Button onPress={() => this.props.navigation.navigate("ForgotPassword")} color="#000" title="Forgot?" />
 					<View style={{ width: 10 }} />
 					<Button
 						onPress={() => {

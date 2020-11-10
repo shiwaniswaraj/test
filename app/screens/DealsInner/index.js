@@ -64,7 +64,7 @@ export class DealsInner extends React.Component {
 			data: JSON.parse(data),
 			flighttimes,
 		});
-		console.log("deals inner data = ", data);
+		// console.log("deals inner data = ", data);
 		this.props.flightDetails(id);
 		//this.toggle();
 	}
@@ -75,14 +75,14 @@ export class DealsInner extends React.Component {
 
 	componentDidUpdate() {
 		let tempData = JSON.parse(this.props.route.params.data);
-		console.log(
+		/* console.log(
 			"data = ",
 			parseFloat(tempData.segments[0].endAirport.latitude)
 		);
 		console.log(
 			"data = ",
 			parseFloat(tempData.segments[0].endAirport.longitute)
-		);
+		); */
 	}
 
 	book = async () => {
@@ -123,16 +123,19 @@ export class DealsInner extends React.Component {
 			data.routes.push({
 				startposition: e.startAirport.icao,
 				endposition: e.endAirport.icao,
-				amount: item.sellerprice.price,
+				amount: parseFloat(item.sellerprice.price.replace(",", ""), 2),
 				currency: item.sellerprice.currency,
 				datetime: e.dateTime.date,
 			});
 		});
 
-		await this.props.book(JSON.stringify(data));
-		setTimeout(() => {
-			this.props.navigation.navigate("Trips");
-		}, 2000);
+		await this.props.book(JSON.stringify(data))
+		.then(res => {
+			console.log("res local = ", res);
+			if (res.data.status == 200) {
+				this.props.navigation.navigate("Trips");
+			}
+		})
 	};
 
 	render() {
@@ -488,7 +491,7 @@ export class DealsInner extends React.Component {
 															this.props.route.params.flighttimes,
 															"minutes"
 														)
-														.format("HH:mm")}
+														.format("HH:mm", {trim: false})}
 													{/* {e.dateTime.time} */}
 												</Text>
 											</View>

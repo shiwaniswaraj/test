@@ -3,12 +3,6 @@ import { StyleSheet, View, Image, ScrollView } from "react-native";
 import homeSlide from "@assets/images/homeSlide.png";
 import logoCircle from "@assets/icon.png";
 import Text from "@components/Text";
-import edit from "@assets/images/iconProfile/edit.png";
-import familyInsurance from "@assets/images/iconProfile/family-insurance.png";
-import faq from "@assets/images/iconProfile/faq.png";
-import shield from "@assets/images/iconProfile/shield.png";
-import insurance from "@assets/images/iconProfile/insurance.png";
-import logout from "@assets/images/iconProfile/logout.png";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { connect } from "react-redux";

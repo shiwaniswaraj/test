@@ -63,7 +63,7 @@ class Register extends React.Component {
 		Toast.show({
 			text: message,
 			buttonText: "Okay",
-			duration: 3000,
+			duration: 2000,
 			position: "top",
 			type,
 		});

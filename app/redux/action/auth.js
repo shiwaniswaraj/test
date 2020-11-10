@@ -19,7 +19,7 @@ const notify = (message, type) => {
 	Toast.show({
 		text: message,
 		buttonText: "Okay",
-		duration: 3000,
+		duration: 2000,
 		position: "top",
 		type,
 	});
@@ -63,7 +63,7 @@ export const CheckEmailMobile = (
 				console.log("check = ", res);
 				if (res.data.status == 200) {
 					dispatch({ type: CHECK_EMAIL_MOBILE, paylod: dataToSend });
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					notify(res.data.message, "danger");
 				}
@@ -116,7 +116,7 @@ export const RegisterAction = (registerData) => {
 				if (res.data.status == 200) {
 					dispatch({ type: "ErrorRegister", paylod: false });
 					dispatch({ type: REGISTER, paylod: res.data });
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					dispatch({ type: "ErrorRegister", paylod: true });
 
@@ -150,7 +150,7 @@ export const VerifyOtp = (phonenumber, countrycode, otp) => {
 				console.log(res);
 				if (res.data.status == 200) {
 					dispatch({ type: VERIFYOTP, paylod: true });
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					dispatch({ type: VERIFYOTP, paylod: false });
 					notify(res.data.message, "danger");
@@ -180,7 +180,7 @@ export const ResendOtp = (phonenumber, countrycode) => {
 				console.log(res.data);
 				if (res.data.status == 200) {
 					dispatch({ type: RESENDOTP, paylod: res.data });
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					notify(res.data.message, "danger");
 				}
@@ -207,7 +207,7 @@ export const LoginAction = (em, pass, token) => {
 			.then((res) => {
 				if (res.data.status == 200) {
 					dispatch({ type: LOGIN, paylod: res.data.data });
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					notify(res.data.message, "danger");
 				}
@@ -224,6 +224,33 @@ export const LoginAction = (em, pass, token) => {
 	};
 };
 
+export const ForgotPasswordAction = (em) => {
+	return async (dispatch, getState) => {
+		dispatch({ type: "showloading", paylod: true });
+		var data = new FormData();
+		data.append("action", "forgotpassword");
+		data.append("email", em);
+
+		return await CALL_API("post", "Customer/Forgotpassword", data)
+			.then((res) => {
+				if (res.data.status == 200) {
+					notify("Email has been sent", "success");
+				} else {
+					notify(res.data.message, "danger");
+				}
+				// dispatch({ type: "hideloading", paylod: true });
+				return res;
+			})
+			.catch((err) => {
+				// dispatch({ type: "hideloading", paylod: true });
+				return err;
+			})
+			.finally(() => {
+				dispatch({ type: "hideloading", paylod: true });
+			});
+	};
+};
+
 export const GetProfile = (id) => {
 	return async (dispatch, getState) => {
 		var data = new FormData();
@@ -235,7 +262,7 @@ export const GetProfile = (id) => {
 			.then((res) => {
 				if (res.data.status == 200) {
 					dispatch({ type: PROFILE, paylod: res.data.data });
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					notify(res.data.message, "danger");
 				}
@@ -266,21 +293,23 @@ export const passChange = (
 		data.append("confirmpassword", confirmpassword);
 		dispatch({ type: "showloading", paylod: true });
 
-		CALL_API("post", "Customer/changepassword", data)
+		return CALL_API("post", "Customer/changepassword", data)
 			.then((res) => {
-				console.log(res);
+				//console.log(res.data);
 				if (res.data.status == 200) {
 					// dispatch({type:PROFILE,paylod:res.data.data});
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					notify(res.data.message, "danger");
 				}
 				setTimeout(() => {
 					dispatch({ type: "hideloading", paylod: true });
 				}, 1000);
+				return res;
 			})
 			.catch((err) => {
 				dispatch({ type: "hideloading", paylod: true });
+				return err;
 			});
 	};
 };
@@ -336,7 +365,7 @@ export const SaveProfile = (dataToSend) => {
 				console.log(res);
 				if (res.data.status == 200) {
 					dispatch({ type: PROFILE, paylod: res.data.data });
-					notify(res.data.message, "success");
+					//notify(res.data.message, "success");
 				} else {
 					notify(res.data.message, "danger");
 				}

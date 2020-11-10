@@ -11,7 +11,7 @@ const notify = (message, type) => {
 	Toast.show({
 		text: message,
 		buttonText: "Okay",
-		duration: 3000,
+		duration: 2000,
 		position: "top",
 		type,
 	});
@@ -72,11 +72,9 @@ export const searchFlight = (data) => {
 		dispatch({ type: "showloading", paylod: true });
 		// dispatch({type:AIRCRAFT_LIST,paylod:null});
 
-		await CALL_API("post", "Airpot/Searchaircarft", fromdata)
+		return await CALL_API("post", "Airpot/Searchaircarft", fromdata)
 			.then((res) => {
-				setTimeout(() => {
-					dispatch({ type: "hideloading", paylod: true });
-				}, 1000);
+				dispatch({ type: "hideloading", paylod: true });
 
 				if (res.data.status == 200) {
 					dispatch({ type: AIRCRAFT_LIST, paylod: res.data.data });
@@ -90,6 +88,7 @@ export const searchFlight = (data) => {
 			})
 			.catch((err) => {
 				dispatch({ type: "hideloading", paylod: true });
+				return err;
 			});
 	};
 };
@@ -102,9 +101,7 @@ export const flightDetails = (id) => {
 
 		await CALL_API("post", "Airpot/Aircraftdetail", fromdata)
 			.then((res) => {
-				setTimeout(() => {
-					dispatch({ type: "hideloading", paylod: true });
-				}, 1000);
+				dispatch({ type: "hideloading", paylod: true });
 
 				if (res.data.status == 200) {
 					dispatch({ type: AIRCRAFT_DETAIL, paylod: res.data.data });
@@ -156,25 +153,25 @@ export const book = (data) => {
 		fromdata.append("data", data);
 		dispatch({ type: "showloading", paylod: true });
 
-		await CALL_API("post", "Airpot/Addbooking", fromdata)
+		return await CALL_API("post", "Airpot/Addbooking", fromdata)
 			.then((res) => {
-				setTimeout(() => {
-					dispatch({ type: "hideloading", paylod: true });
-				}, 1000);
+				
+				dispatch({ type: "hideloading", paylod: true });
 				if (res.data.status == 200) {
 					dispatch({ type: BOOKING, paylod: res.data.data });
-					notify(
+					/* notify(
 						"Your Booking is created will keep in touch shortly",
 						"success"
-					);
+					); */
 				} else {
-					// notify(res.data.message,"danger");
+					notify(res.data.message,"danger");
 				}
 
-				return "success";
+				return res;
 			})
 			.catch((err) => {
 				dispatch({ type: "hideloading", paylod: true });
+				return err;
 			});
 	};
 };
