@@ -13,8 +13,19 @@ export default function App() {
     "Helvetica-Neue": require("./assets/fonts/HelveticaNeue.ttf"),
     'Roboto': require('native-base/Fonts/Roboto.ttf'),
     'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-  });
-  if (!fontsLoaded) {
+	});
+	
+	return (
+		<Root>
+		<Provider  store={store}>
+		<View style={styles.container}>
+			{Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
+			<Application/>
+		 </View>
+		 </Provider>
+		 </Root>
+	);
+  /* if (!fontsLoaded) {
     return (
       <AppLoading/>
     );
@@ -29,7 +40,7 @@ export default function App() {
        </Provider>
        </Root>
     );
-  }
+  } */
 }
   
 const styles = StyleSheet.create({

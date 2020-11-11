@@ -276,7 +276,7 @@ export class EditProfile extends React.Component {
 									</View>
 
 									<Input
-										label="Pincode"
+										label="Zip Code"
 										value={this.state.pincode}
 										onChangeText={(val) => {
 											this.handleTextChange("pincode", val);

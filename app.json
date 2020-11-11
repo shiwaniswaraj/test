@@ -2,7 +2,7 @@
   "expo": {
     "name": "EMCJET",
     "slug": "EMCJET",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "privacy": "unlisted",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,13 +19,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.evolution.emcjet.com"
+      "bundleIdentifier": "com.evolution.emcjet"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "package": "com.evolution.emcjet.com",
+      "package": "com.evolution.emcjet",
       "config": {
         "googleMaps": { "apiKey": "AIzaSyAAuYI96aUgMYEeA5t5h-NMBnoa7YttIwE" }   
      }

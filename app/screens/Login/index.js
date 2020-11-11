@@ -105,7 +105,7 @@ class Login extends React.Component {
 								onPress={() => {
 									this.props.navigation.navigate("WebView", {
 										title: "Terms of Use",
-										uri: "https://emc.webdemotest.com/cmspage/terms.php",
+										uri: "https://app.emcjet.com/cmspage/terms.php",
 									});
 								}}
 							>
@@ -118,7 +118,7 @@ class Login extends React.Component {
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
 									title: "Privacy Policy",
-									uri: "https://emc.webdemotest.com/cmspage/privacy.php",
+									uri: "https://app.emcjet.com/cmspage/privacy.php",
 								});
 							}}
 						>

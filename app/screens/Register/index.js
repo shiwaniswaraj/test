@@ -5,6 +5,7 @@ import {
 	Platform,
 	ScrollView,
 	TouchableOpacity,
+	KeyboardAvoidingView,
 } from "react-native";
 import Input from "@components/Input";
 import Button from "@components/Button";
@@ -16,12 +17,14 @@ import { connect } from "react-redux";
 import { CheckEmailMobile } from "../../redux/action/auth";
 import PickerInput from "@components/CountryPicker";
 import { Icon, Toast, CheckBox, Picker } from "native-base";
+//import { Picker } from '@react-native-community/picker';
 import usStateList from "@assets/us-states.json";
 
 class Register extends React.Component {
 	state = {
 		email: "",
 		password: "",
+		cnfPassword: "",
 		tel: "+1",
 		ccode: "1",
 		txtcountrycode: "US",
@@ -120,6 +123,7 @@ class Register extends React.Component {
 		let {
 			email,
 			password,
+			cnfPassword,
 			ccode,
 			tel,
 			token,
@@ -138,6 +142,12 @@ class Register extends React.Component {
 			return;
 		} else if (!password) {
 			this.notify("Please enter password!", "danger");
+			return;
+		} else if (!cnfPassword) {
+			this.notify("Please enter confirm password!", "danger");
+			return;
+		} else if (password != cnfPassword) {
+			this.notify("Confirm password does not match", "danger");
 			return;
 		} else if (!tel) {
 			this.notify("Please enter phone number!", "danger");
@@ -206,7 +216,12 @@ class Register extends React.Component {
 		const { email, password, ccode, tel, retdirect } = this.state;
 
 		return (
-			<View style={styles.container}>
+			<KeyboardAvoidingView
+				style={styles.container}
+				behavior={Platform.OS == "ios" ? "padding" : "height"}
+				enabled
+				keyboardVerticalOffset={80}
+			>
 				<ScrollView>
 					<Input
 						label="First Name"
@@ -234,10 +249,18 @@ class Register extends React.Component {
 						keyboardType="email-address"
 					/>
 					<Input
-						label="Create Password"
+						label="Password"
 						value={this.state.password}
 						onChangeText={(val) => {
 							this.handleTextChange("password", val);
+						}}
+						secureTextEntry={true}
+					/>
+					<Input
+						label="Confirm Password"
+						value={this.state.cnfPassword}
+						onChangeText={(val) => {
+							this.handleTextChange("cnfPassword", val);
 						}}
 						secureTextEntry={true}
 					/>
@@ -281,9 +304,10 @@ class Register extends React.Component {
 							iosIcon={<Icon name="arrow-down" style={{ color: "#fff" }} />}
 							style={{
 								width: "100%",
-								color: "#FFF",
-								marginLeft: Platform.OS === "android" ? -5 : 0,
+								color: "#fff",
+								marginLeft: Platform.OS == "ios" ? -15 : -8,
 							}}
+							textStyle={{ color: "#fff" }}
 							placeholder="Select your state"
 							placeholderStyle={{ color: "#FFF" }}
 							placeholderIconColor="#FFF"
@@ -306,7 +330,7 @@ class Register extends React.Component {
 					</View>
 
 					<Input
-						label="Pincode"
+						label="Zip Code"
 						value={this.state.pincode}
 						onChangeText={(val) => {
 							this.handleTextChange("pincode", val);
@@ -367,7 +391,7 @@ class Register extends React.Component {
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
 									title: "Terms of Use",
-									uri: "https://emc.webdemotest.com/cmspage/terms.php",
+									uri: "https://app.emcjet.com/cmspage/terms.php",
 								});
 							}}
 						>
@@ -378,7 +402,7 @@ class Register extends React.Component {
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
 									title: "Privacy Policy",
-									uri: "https://emc.webdemotest.com/cmspage/privacy.php",
+									uri: "https://app.emcjet.com/cmspage/privacy.php",
 								});
 							}}
 						>
@@ -394,7 +418,7 @@ class Register extends React.Component {
 						/>
 					</View>
 				</ScrollView>
-			</View>
+			</KeyboardAvoidingView>
 		);
 	}
 }

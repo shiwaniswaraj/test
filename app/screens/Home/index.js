@@ -261,7 +261,6 @@ export class Home extends React.Component {
 							resizeMode="contain"
 						/>
 						<TouchableOpacity
-							style={{zIndex: 99}}
 							onPress={() => {
 								Linking.openURL(`tel:+1123456789`);
 							}}
@@ -394,6 +393,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		width: "100%",
+		zIndex: 9999
 	},
 
 	planeImage: {

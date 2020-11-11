@@ -14,7 +14,7 @@ import {
 import AsyncStorage from "@react-native-community/async-storage";
 const getData = async (storage_Key) => {
 	const value = await AsyncStorage.getItem(storage_Key);
-	console.log(value);
+	console.log("auth data = ",value);
 	if (storage_Key == "data") {
 		return value ? JSON.parse(value) : null;
 	}

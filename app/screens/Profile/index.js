@@ -95,7 +95,7 @@ export class Profile extends React.Component {
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
 									title: "About",
-									uri: "https://emc.webdemotest.com/cmspage/about.php",
+									uri: "https://app.emcjet.com/cmspage/about.php",
 								});
 							}}
 							style={styles.list}
@@ -108,7 +108,7 @@ export class Profile extends React.Component {
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
 									title: "F.A.Q",
-									uri: "https://emc.webdemotest.com/cmspage/faq.php",
+									uri: "https://app.emcjet.com/cmspage/faq.php",
 								});
 							}}
 							style={styles.list}
@@ -121,7 +121,7 @@ export class Profile extends React.Component {
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
 									title: "Legal",
-									uri: "https://emc.webdemotest.com/cmspage/legal.php",
+									uri: "https://app.emcjet.com/cmspage/legal.php",
 								});
 							}}
 							style={styles.list}
@@ -134,7 +134,7 @@ export class Profile extends React.Component {
 							onPress={() => {
 								this.props.navigation.navigate("WebView", {
 									title: "License Notice",
-									uri: "https://emc.webdemotest.com/cmspage/licence.php",
+									uri: "https://app.emcjet.com/cmspage/licence.php",
 								});
 							}}
 							style={styles.list}
