@@ -179,10 +179,20 @@ export class DealsInner extends React.Component {
 					})} */}
 					<View style={styles.whiteBottomInner}>
 						<Image style={styles.pin} source={iconPlane} />
-						<Text>{title.lift.aircraftCategory} </Text>
-						<Text style={{ fontSize: 11, marginLeft: 30 }}>
+						<Text style={{ flex: 1, flexWrap: "wrap" }}>{title.lift.aircraftCategory} </Text>
+						{/* <Text style={{ fontSize: 11, marginLeft: 30 }}>
 							UP TO {item.lift.maxPax} SEATS
-						</Text>
+						</Text> */}
+							<Image
+								source={chair}
+								style={styles.pin}
+								resizeMode="contain"
+							/>
+							{item && (
+								<Text style={{ color: "red", textAlign: "right" }}>
+									{item.lift.maxPax}
+								</Text>
+							)}
 					</View>
 
 					{data.segments.map((e, fDetailIndx) => {
@@ -210,22 +220,22 @@ export class DealsInner extends React.Component {
 											marginBottom: 3,
 										}}
 									>
-										<Image
+										{/* <Image
 											source={chair}
 											style={{ width: 15, height: 15, marginRight: 10 }}
 											resizeMode="contain"
 										/>
 										{item && (
 											<Text style={{ color: "red", textAlign: "right" }}>
-												{e.paxCount}
+												{item.lift.maxPax}
 											</Text>
-										)}
+										)} */}
 									</View>
-									<View style={{ flexDirection: "row", alignItems: "center" }}>
+									<View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
 										{item && (
 											<Text style={{ color: "red" }}>
 												${item.sellerprice.price}/
-												<Text style={{ fontSize: 10 }}>SEAT</Text>
+												<Text style={{ fontSize: 10 }}>FLIGHT</Text>
 											</Text>
 										)}
 									</View>
@@ -466,11 +476,12 @@ export class DealsInner extends React.Component {
 											}}
 										>
 											<Text style={{ textTransform: "uppercase" }}>
-												seats selected
+												total seats
 											</Text>
 											<View style={{ flexDirection: "row", marginTop: 10 }}>
 												<Image source={chair} style={styles.chair} />
-												<Text style={{ color: "red" }}>{e.paxCount}</Text>
+												{/* <Text style={{ color: "red" }}>{e.paxCount}</Text> */}
+												<Text style={{ color: "red" }}>{item.lift.maxPax}</Text>
 											</View>
 										</View>
 										<View

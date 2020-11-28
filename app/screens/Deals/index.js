@@ -77,7 +77,7 @@ export class Deals extends React.Component {
 				)}
 
 				<View style={styles.whiteBottom}>
-					<View style={styles.whiteBottomInner}>
+					<View style={[styles.whiteBottomInner, {paddingTop: 10}]}>
 						<Image style={styles.pin} source={pin} />
 						<Text style={{ flex: 1, flexWrap: "wrap" }}>
 							{item.startPosition.city}
@@ -91,13 +91,18 @@ export class Deals extends React.Component {
 							{endAirport && endAirport.name}
 						</Text> */}
 					</View>
-					{/* <View style={styles.whiteBottomInner}>
-						<Image style={styles.pin} source={iconPlane} />
-						<Text>{item.lift.aircraftCategory}</Text>
-						<Text style={{ fontSize: 11, marginLeft: 30 }}>
+					<View style={styles.whiteBottomInner}>
+						{/* <Image style={styles.pin} source={iconPlane} />
+						<Text>{item.lift.aircraftCategory}</Text> */}
+						{/* <Image
+							source={chair}
+							style={styles.pin}
+							resizeMode="contain"
+						/>
+						<Text style={{ flex: 1, flexWrap: "wrap" }}>
 							UP TO {item.lift.maxPax} SEATS
-						</Text>
-					</View> */}
+						</Text> */}
+					</View>
 					{/* {data &&
 						JSON.parse(data).segments.map((e) => {
 							return (
@@ -142,10 +147,18 @@ export class Deals extends React.Component {
 							alignSelf: "flex-end",
 						}}
 					>
+						<Image
+							source={chair}
+							style={styles.pin}
+							resizeMode="contain"
+						/>
+						<Text style={{ flex: 1, flexWrap: "wrap", fontSize: 13 }}>
+							UP TO {item.lift.maxPax} SEATS
+						</Text>
 						{/* <Text style={{fontSize:11,marginRight:10}}>WHOLE AIRCRAFT</Text> */}
 						<Text style={{ color: "red", fontSize: 24 }}>
 							${item.sellerprice.price}/
-							<Text style={{ fontSize: 16 }}>SEAT</Text>
+							<Text style={{ fontSize: 16 }}>FLIGHT</Text>
 						</Text>
 					</View>
 				</View>
@@ -224,7 +237,7 @@ const styles = StyleSheet.create({
 	whiteBottomInner: {
 		flexDirection: "row",
 		alignItems: "center",
-		paddingVertical: 10,
+		paddingVertical: 5,
 	},
 	pin: {
 		width: 20,

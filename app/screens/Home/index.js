@@ -241,7 +241,7 @@ export class Home extends React.Component {
 							onPress={() => this.sliderAction(item)}
 						>
 							<View style={styles.btnPrice}>
-								<Text>${item.price}/SEAT</Text>
+								<Text>${item.price}/FLIGHT</Text>
 							</View>
 						</TouchableOpacity>
 					</View>
