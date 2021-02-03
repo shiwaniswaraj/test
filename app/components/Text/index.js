@@ -11,7 +11,7 @@ export default function TextApp(props) {
 
 const styles = StyleSheet.create({
   text: {
-        fontFamily:"Helvetica-Neue",
+        fontFamily:"Roboto",
         
     }
 });

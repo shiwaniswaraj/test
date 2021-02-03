@@ -39,7 +39,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const options = {
 	headerStyle: {
-		backgroundColor: "#3d3d3d",
+		backgroundColor: "#B49A5A",
 		borderWidth: 0,
 		borderBottomWidth: 0,
 		shadowRadius: 0,

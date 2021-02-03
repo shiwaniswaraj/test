@@ -10,7 +10,8 @@ import { Root } from "native-base";
 export default function App() {
   
   let [fontsLoaded] = useFonts({
-    "Helvetica-Neue": require("./assets/fonts/HelveticaNeue.ttf"),
+    
+    
     'Roboto': require('native-base/Fonts/Roboto.ttf'),
     'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
 	});

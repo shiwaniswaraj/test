@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity,SafeAreaView } from "react-native";
 import backgroundLogin from "@assets/images/backgroundlogin.jpg";
 import logo from "@assets/images/logo.png";
 import Button from "@components/Button";
@@ -8,7 +8,52 @@ import Link from "@components/Link";
 import { connect } from "react-redux";
 import { changeData } from "../../redux/action/auth";
 import AsyncStorage from "@react-native-community/async-storage";
+
+import AppIntroSlider from 'react-native-app-intro-slider';
+
+import intro4 from "../../../assets/images/intro4.png";
+
+
+const slides = [
+	{
+	  key: 1,
+	  title: 'Flying private has never been easier',
+	  text: "Whether it's your first time or you're a private aviation aficionado, EMCJET makes it easy to access the options that you need",
+	  image: require('../../../assets/images/intro1.png'),
+	  backgroundColor: '#FFF',
+	},
+	{
+		key: 2,
+		title: 'Book the whole plane or just the seats you need',
+		text: "EMCJETS offers multiple ways to buy including private charter, individual seats on private jet and flexible options in between.",
+		image: require('../../../assets/images/intro2.png'),
+
+		backgroundColor: '#FFF',
+	  },
+	  {
+		key: 3,
+		title: "The power of choice in your hands",
+		text: "Choose where, when and how you want to fly and EMCJET take care of the rest. See prices on existing options or create the one that's right for you.",
+		image: require('../../../assets/images/intro3.png'),
+
+		backgroundColor: '#FFF',
+	  }
+	  
+		 
+  ];
+  
 class Login extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.state={
+			showRealApp:false,
+			currindex:0
+		}
+			this.slider = React.createRef();
+
+	}
+
 	async componentDidMount() {
 		const unsubscribe = this.props.navigation.addListener("focus", () => {
 
@@ -36,36 +81,79 @@ class Login extends React.Component {
 		}
 		return value ? true : false;
 	};
+	_renderItem = ({ item }) => {
+		return (
+			<SafeAreaView style={{flex:1,padding:20,paddingVertical:50}}>
+		  <View style={styles.slide}>
+			<Text style={styles.title}>{item.title}</Text>
+			<Text style={styles.text}>{item.text}</Text>
+			{this._renderNextButton()}
 
+
+
+		  </View>
+		  <Image resizeMode="contain" style={styles.imagebg} source={item.image}/>
+		  </SafeAreaView>
+		);
+	  }
+	  _onDone = () => {
+		// User finished the introduction. Show real app through
+		// navigation or simply by controlling state
+		this.setState({ showRealApp: true });
+	  }
+	  onSlideChange=(ind,lasind)=>{
+		console.log(ind);
+		this.setState({
+			currindex:ind
+		})
+	  }
+
+	  _renderNextButton = () => {
+		  const {currindex}=this.state;
+		return (
+			<Button
+			style={{width:'100%'}}
+			onPress={() => {
+				if(this.state.currindex<slides.length-1){
+
+				this.setState({
+					currindex:this.state.currindex+1
+				},()=>{
+				this.slider.current.goToSlide(this.state.currindex)
+				})
+			}else{
+				this._onDone();
+			}
+
+
+		}}
+			filled
+			title={this.state.currindex==2?"DONE":"NEXT"}
+		/>
+		);
+	  };
+	
+		
 	render() {
 		const { navigation } = this.props;
 		const { route } = this.props;
 		// const { from} = route.params;
 
+		if (!this.state.showRealApp) {
+			
+			return <AppIntroSlider 
+			showNextButton={false}
+			ref={this.slider} 
+			onSlideChange={this.onSlideChange}
+			showDoneButton={false}
+			renderItem={this._renderItem} data={slides} onDone={this._onDone}/>;
+		  }
+	  
 		return (
 			<View style={styles.container}>
-				<View style={styles.logoContainer}>
-					<Image source={logo} style={styles.logo} />
-				</View>
-				<View
-					style={styles.skip}
-					onStartShouldSetResponder={() => {
-						navigation.navigate("Home");
-					}}
-				>
-					<TouchableOpacity
-						onPress={() => {
-							navigation.navigate("Home");
-						}}
-					>
-						<Text style={{ color: "#FFF" }}>SKIP</Text>
-					</TouchableOpacity>
-				</View>
-				<Image
-					source={backgroundLogin}
-					style={{ width: "100%", height: "100%" }}
-				/>
-				<View style={styles.btnBase}>
+		  <Image resizeMode="contain" style={styles.imagebg} source={intro4}/>
+			 
+				 	<View style={styles.btnBase}>
 					<Button
 						onPress={() => {
 							navigation.navigate("Register");
@@ -109,7 +197,7 @@ class Login extends React.Component {
 									});
 								}}
 							>
-								<Text style={{ color: "#D8343B" }}>Terms of Use</Text>
+								<Text style={{ color: "#B49A5A" }}>Terms of Use</Text>
 						</TouchableOpacity>
 						<Text style={styles.textCommon}>
 							{` and `}
@@ -122,7 +210,7 @@ class Login extends React.Component {
 								});
 							}}
 						>
-							<Text style={{ color: "#D8343B" }}>Privacy Policy</Text>
+							<Text style={{ color: "#B49A5A" }}>Privacy Policy</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -134,7 +222,7 @@ class Login extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#3d3d3d",
+		backgroundColor: "#FFF",
 	},
 	logo: {
 		width: 185,
@@ -157,7 +245,8 @@ const styles = StyleSheet.create({
 	btnBase: {
 		position: "absolute",
 		alignSelf: "center",
-		bottom: 10,
+		top:'25%',
+		
 		zIndex: 9,
 		padding: 10,
 		alignItems: "center",
@@ -166,9 +255,31 @@ const styles = StyleSheet.create({
 	},
 	textCommon: {
 		padding: 5,
-		color: "#FFF",
+		color: "#000",
 		textAlign: "center",
 	},
+	nextBtn:{
+		padding:15,
+		textAlign:'center',
+		backgroundColor:'#b49a5a'
+	},
+	slide:{
+		width:'100%',
+		
+	},
+	text:{
+		marginBottom:20,
+		marginTop:10
+	},
+	title:{
+		fontSize:18
+	},
+	imagebg:{
+		position:'absolute',
+		bottom:-50,
+		right:0,
+		maxWidth:250
+	}
 });
 
 const mapStateToProps = (state) => {

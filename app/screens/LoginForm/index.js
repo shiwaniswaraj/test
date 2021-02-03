@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Platform } from "react-native";
 import Input from "@components/Input";
+import Text from "@components/Text";
 import Button from "@components/Button";
 import Redirect from "@components/Redirect";
 // import { Notifications, Permissions } from 'expo';
@@ -172,6 +173,7 @@ class LoginForm extends React.Component {
 
 	render() {
 		const { route } = this.props;
+		const { email,password} = this.state;
 
 		if (this.props.isLoggedin) {
 			return (
@@ -203,15 +205,17 @@ class LoginForm extends React.Component {
 					secureTextEntry={true}
 				/>
 				<View style={styles.btnBase}>
-					<Button onPress={() => this.props.navigation.navigate("ForgotPassword")} color="#000" title="Forgot?" />
-					<View style={{ width: 10 }} />
+					
 					<Button
+						filled
 						onPress={() => {
 							this.handleLogin();
 						}}
+						disabled={!password || !email}
 						title="Login"
 					/>
 				</View>
+						<Text style={{textAlign:'center',marginTop:10}}>Forgot Password?</Text>
 			</View>
 		);
 	}
@@ -220,7 +224,7 @@ class LoginForm extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#3d3d3d",
+		backgroundColor: "#FFF",
 		padding: 20,
 		paddingTop: 0,
 	},

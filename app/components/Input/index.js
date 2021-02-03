@@ -34,13 +34,13 @@ const defaultStyles = {
   labelStyle: {
     position: 'absolute',
       left: 0,
-      color:black?'black':'#FFF',
+      color:black?'black':'#000',
       fontFamily:"Helvetica-Neue"
   },
   textInput: {
       height: 40, 
       fontSize: 15, 
-      color: black?'black':'#FFF', 
+      color: black?'black':'#000', 
       borderBottomWidth: 1, 
       borderBottomColor: '#707070',
 
@@ -49,7 +49,7 @@ const defaultStyles = {
     focusedTextInput: {
         
     },
-    selectionColor: black?'black':'#FFF',
+    selectionColor: black?'black':'#000',
 }
     const { label, colorLablel,...props } = this.props;
     const { isFocused } = this.state;
@@ -65,12 +65,12 @@ const defaultStyles = {
       }),
       color: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [black?'black':'#FFF', black?'black':'#FFF'],
+        outputRange: [black?'black':'#000', black?'black':'#000'],
       }),
     };
     return (
       <View style={{ paddingTop: 18 }}>
-        <Animated.Text style={[style.labelStyle,animatedLabelStyle,{color:colorLablel?colorLablel:black?'black':'#FFF'}]}>
+        <Animated.Text style={[style.labelStyle,animatedLabelStyle,{color:colorLablel?colorLablel:black?'black':'#000'}]}>
           {label}
         </Animated.Text>
         <TextInput

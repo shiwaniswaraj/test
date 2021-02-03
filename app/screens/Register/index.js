@@ -16,7 +16,7 @@ import Constants from "expo-constants";
 import { connect } from "react-redux";
 import { CheckEmailMobile } from "../../redux/action/auth";
 import PickerInput from "@components/CountryPicker";
-import { Icon, Toast, CheckBox, Picker } from "native-base";
+import { Icon, Toast, Switch, Picker } from "native-base";
 //import { Picker } from '@react-native-community/picker';
 import usStateList from "@assets/us-states.json";
 
@@ -25,6 +25,7 @@ class Register extends React.Component {
 		email: "",
 		password: "",
 		cnfPassword: "",
+		swtch:true,
 		tel: "+1",
 		ccode: "1",
 		txtcountrycode: "US",
@@ -194,6 +195,7 @@ class Register extends React.Component {
 			tel,
 			txtcountrycode,
 			fname,
+			
 			lname,
 			address,
 			city,
@@ -222,23 +224,8 @@ class Register extends React.Component {
 				enabled
 				keyboardVerticalOffset={80}
 			>
-				<ScrollView>
-					<Input
-						label="First Name"
-						value={this.state.fname}
-						onChangeText={(val) => {
-							this.handleTextChange("fname", val);
-						}}
-					/>
-
-					<Input
-						label="Last Name"
-						value={this.state.lname}
-						onChangeText={(val) => {
-							this.handleTextChange("lname", val);
-						}}
-					/>
-
+				<ScrollView style={{flex:1}}>
+				 
 					<Input
 						label="Email"
 						value={this.state.email}
@@ -256,89 +243,7 @@ class Register extends React.Component {
 						}}
 						secureTextEntry={true}
 					/>
-					<Input
-						label="Confirm Password"
-						value={this.state.cnfPassword}
-						onChangeText={(val) => {
-							this.handleTextChange("cnfPassword", val);
-						}}
-						secureTextEntry={true}
-					/>
-
-					<Input
-						label="Address"
-						value={this.state.address}
-						onChangeText={(val) => {
-							this.handleTextChange("address", val);
-						}}
-						autoCapitalize="none"
-					/>
-
-					<Input
-						label="City"
-						value={this.state.city}
-						onChangeText={(val) => {
-							this.handleTextChange("city", val);
-						}}
-						autoCapitalize="none"
-					/>
-
-					{/* <Input
-						label="State"
-						value={this.state.userstate}
-						onChangeText={(val) => {
-							this.handleTextChange("userstate", val);
-						}}
-						autoCapitalize="none"
-					/> */}
-
-					<View
-						style={{
-							borderBottomWidth: 1,
-							borderBottomColor: "#707070",
-							paddingVertical: 3,
-						}}
-					>
-						<Picker
-							mode="dropdown"
-							iosIcon={<Icon name="arrow-down" style={{ color: "#fff" }} />}
-							style={{
-								width: "100%",
-								color: "#fff",
-								marginLeft: Platform.OS == "ios" ? -15 : -8,
-							}}
-							textStyle={{ color: "#fff" }}
-							placeholder="Select your state"
-							placeholderStyle={{ color: "#FFF" }}
-							placeholderIconColor="#FFF"
-							selectedValue={this.state.userstate}
-							onValueChange={(selected) => {
-								this.setState({ userstate: selected });
-							}}
-						>
-							<Picker.Item
-								style={{ color: "#FFF" }}
-								label={"Select your state"}
-								value={undefined}
-							/>
-							{usStateList.map((item, indx) => {
-								return (
-									<Picker.Item key={indx} label={item.name} value={item.name} />
-								);
-							})}
-						</Picker>
-					</View>
-
-					<Input
-						label="Zip Code"
-						value={this.state.pincode}
-						onChangeText={(val) => {
-							this.handleTextChange("pincode", val);
-						}}
-						autoCapitalize="none"
-						keyboardType="numeric"
-					/>
-
+				   
 					<View style={{ flexDirection: "row" }}>
 						<PickerInput
 							style={{
@@ -362,7 +267,7 @@ class Register extends React.Component {
 						</View>
 					</View>
 
-					<Text style={{ fontSize: 10, color: "#FFF", marginTop: 15 }}>
+					<Text style={{ fontSize: 10, color: "#000", marginTop: 15 }}>
 						We will send you an SMS to ensure the phone number is valid
 					</Text>
 
@@ -370,54 +275,45 @@ class Register extends React.Component {
 						style={{
 							flexDirection: "row",
 							marginTop: 10,
-							width: Platform.OS === "ios" ? "80%" : "95%",
+							
 						}}
 					>
-						<CheckBox
-							style={{ marginTop: 15 }}
-							checked={this.state.terms}
-							color="#D8343B"
-							onPress={() => {
-								this.setState({ terms: !this.state.terms });
-							}}
-						/>
-						<Text style={{ marginTop: 0, marginLeft: 20, color: "#fff" }}>
-							By accessing this application and using services provided by
-							EMCJET, You agree to the
+					 
+						<Text style={{ marginTop: 0, flex:1,color: "#000" }}>Validation</Text>
+						<Switch value={this.state.swtch} onValueChange={(e)=>{
+							this.setState({
+								swtch:e
+							})
+						}} color="red"/>
+
+					</View>
+
+					<View
+						style={{
+							flexDirection: "row",
+							marginTop: 10,
+							
+						}}
+					>
+					 
+						<Text style={{ marginTop: 0, color: "#000" }}>
+						I consent that my email and phone will be used to create my account.
+Account is required to purchase aviation services. We will send you  an SMS to ensure the phone number is valid
 						</Text>
 					</View>
-					<View style={{ flexDirection: "row", marginLeft: 40 }}>
-						<TouchableOpacity
-							onPress={() => {
-								this.props.navigation.navigate("WebView", {
-									title: "Terms of Use",
-									uri: "https://app.emcjet.com/cmspage/terms.php",
-								});
-							}}
-						>
-							<Text style={{ color: "#D8343B" }}>Terms of Use </Text>
-						</TouchableOpacity>
-						<Text style={{ color: "#fff" }}>and</Text>
-						<TouchableOpacity
-							onPress={() => {
-								this.props.navigation.navigate("WebView", {
-									title: "Privacy Policy",
-									uri: "https://app.emcjet.com/cmspage/privacy.php",
-								});
-							}}
-						>
-							<Text style={{ color: "#D8343B" }}> Privacy Policy</Text>
-						</TouchableOpacity>
-					</View>
-					<View style={styles.btnBase}>
+					
+					
+					
+				</ScrollView>
+				<View style={styles.btnBase}>
 						<Button
+							filled
 							onPress={() => {
 								this.handleRegister();
 							}}
 							title="Next"
 						/>
 					</View>
-				</ScrollView>
 			</KeyboardAvoidingView>
 		);
 	}
@@ -426,7 +322,7 @@ class Register extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#3d3d3d",
+		backgroundColor: "#FFF",
 		padding: 20,
 		paddingTop: 0,
 	},
