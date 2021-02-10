@@ -664,20 +664,20 @@ export class SearchFlight extends React.Component {
 												maximumValue={15}
 												minimumValue={1}
 												step={1}
-												trackStyle={{ height: 20, backgroundColor: "#FFF" }}
+												trackStyle={{ height: 20, backgroundColor: "#fff" }}
 												thumbStyle={{
 													height: 30,
 													width: 30,
-													backgroundColor: "#FFF",
+													backgroundColor: "#b49a5a",
 												}}
 												value={e.pax}
-												maximumTrackTintColor="red"
-												minimumTrackTintColor="#FFF"
+												maximumTrackTintColor="#fff"
+												minimumTrackTintColor="#b49a5a"
 												onValueChange={(val) => {
 													this.onChangePax(val);
 												}}
 											/>
-											<Text style={{ alignSelf: "center", color: "#FFF" }}>
+											<Text style={{ alignSelf: "center", color: "#000" }}>
 												PAX: {e.pax}
 											</Text>
 										</View>
@@ -742,7 +742,8 @@ export class SearchFlight extends React.Component {
 
 				<View style={[styles.botButton]}>
 					<Button
-						color={mydiableStyle ? "#DDD" : "red"}
+						color={mydiableStyle ? "#DDD" : "#fff"}
+						filled={!mydiableStyle}
 						onPress={() => {
 							this.searchData();
 						}}
@@ -756,7 +757,7 @@ export class SearchFlight extends React.Component {
 						value={new Date()}
 						mode="time"
 						is24Hour={true}
-						textColor="white"
+						textColor="black"
 						display="default"
 						onChange={this.onChangeTime}
 					/>
@@ -765,7 +766,7 @@ export class SearchFlight extends React.Component {
 					<DateTimePicker
 						testID="dateTimePicker2"
 						value={this.state.date ? new Date(this.state.date) : new Date()}
-						textColor="white"
+						textColor="black"
 						mode="date"
 						display="default"
 						minimumDate={new Date()}
@@ -903,7 +904,7 @@ export class SearchFlight extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#3d3d3d",
+		backgroundColor: "#e4e4e4",
 	},
 	mainBox: {
 		flex: 1,

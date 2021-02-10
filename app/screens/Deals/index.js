@@ -156,9 +156,9 @@ export class Deals extends React.Component {
 							UP TO {item.lift.maxPax} SEATS
 						</Text>
 						{/* <Text style={{fontSize:11,marginRight:10}}>WHOLE AIRCRAFT</Text> */}
-						<Text style={{ color: "red", fontSize: 24 }}>
+						<Text style={{ color: "#000", fontSize: 24, fontWeight: "600" }}>
 							${item.sellerprice.price}/
-							<Text style={{ fontSize: 16 }}>FLIGHT</Text>
+							<Text style={{ fontSize: 16 }}>SEAT</Text>
 						</Text>
 					</View>
 				</View>

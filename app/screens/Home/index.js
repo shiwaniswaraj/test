@@ -11,13 +11,23 @@ import {
 	Linking,
 } from "react-native";
 import Text from "@components/Text";
-import plane from "@assets/images/plane.png";
+import plane from "@assets/images/plane-black.png";
 import logo from "@assets/images/logo-text.png";
 import phone from "@assets/images/phone.png";
+import imgfrom from "@assets/images/flight.png";
+import imgTo from "@assets/images/flightDown.png";
+
+import Input from "@components/Input";
 import returnImg from "@assets/images/returnImg.png";
+import chair from "@assets/images/chair.png";
+import iconPlane from "@assets/images/iconPlane.png";
+
 import leftFlightBox from "@assets/images/leftFlightBox.png";
 import rightFlightBox from "@assets/images/rightFlightBox.png";
-import homeSlide from "@assets/images/homeSlide.png";
+import homeSlide from "@assets/images/background.png";
+import ban from "@assets/images/ban.png";
+import bgc from "@assets/images/bgc.png";
+
 import { AntDesign } from "@expo/vector-icons";
 
 import HomeSearch from "@components/HomeSearch";
@@ -28,6 +38,7 @@ import {
 	resetAircraft,
 } from "../../redux/action/flight";
 
+
 import Carousel, { Pagination } from "react-native-snap-carousel"; // 3.6.0
 
 import moment from "moment";
@@ -35,11 +46,14 @@ import moment from "moment";
 import { BottomSheet } from "react-native-btr";
 
 import BasicUsageDemo from "@components/Calender";
+import { ScrollView } from "react-native-gesture-handler";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export class Home extends React.Component {
 	state = {
+		from:'',
+		to:'',
 		activeTab: 0,
 	};
 	componentDidMount() {
@@ -82,7 +96,7 @@ export class Home extends React.Component {
 				icao: toico,
 				id: item.toairportid,
 				name: to,
-				longitute: item.tolatitude,
+				longitute: item.tolongitude,
 				latitude: item.tolatitude,
 			},
 			dateTime: {
@@ -185,8 +199,57 @@ export class Home extends React.Component {
 		});
 	};
 
+	handleTextChange=(n,e)=>{
+		this.setState({
+			[n]:e
+		})
+	}
 	render() {
 		const { navigation } = this.props;
+
+		const Item2 = ({ item }) => (
+			<TouchableOpacity
+				style={{
+					padding:10,
+					borderRadius:10,
+					overflow:'hidden'
+					
+				}}
+				onPress={() => {
+					this.selectDate(
+						item,
+						item.fromicao,
+						item.toicao,
+						item.time,
+						item.from,
+						item.to
+					);
+				}}
+			> 
+			<View style={{
+				padding:10,
+				position:'absolute',
+				top:10,
+				left:20,
+				zIndex:9
+			}}>
+				<Text style={{color:'#FFF',marginBottom:10}}>Friday 22</Text>
+				<Text style={{color:'#FFF',fontSize:18,fontWeight:'bold'}}>Los Angeles New York</Text>
+			</View>
+			<Image style={{
+					borderTopLeftRadius:10,
+					borderTopRightRadius:10,
+					height:100}}  source={bgc}/>
+				<View style={{padding:20,
+					borderBottomLeftRadius:10,
+					borderBottomRightRadius:10,
+					backgroundColor:'#FFF',flexDirection:'row',justifyContent:'center'}}>
+					<Image resizeMode="contain" style={{width:20,height:20,marginRight:10}} source={iconPlane}/>
+					<Text>US$ 3,330</Text>
+				</View>
+
+			</TouchableOpacity>
+		);
 
 		const Item = ({ item }) => (
 			<TouchableOpacity
@@ -208,12 +271,14 @@ export class Home extends React.Component {
 				</View>
 				<Image style={styles.returnImg} source={returnImg} />
 				<View style={styles.flightboxImg}>
-					<Image style={styles.flightImgBox} source={{ uri: item.fromimage }} />
-					<Image style={styles.flightImgBox} source={{ uri: item.toimage }} />
+					<Image style={styles.flightImgBox} source={leftFlightBox} />
+					<Image style={styles.flightImgBox} source={rightFlightBox} />
 				</View>
 			</TouchableOpacity>
 		);
 		const renderItem = ({ item }) => <Item item={item} />;
+		const renderItem2 = ({ item }) => <Item2 item={item} />;
+		
 
 		const ItemCar = ({ item }) => {
 			return (
@@ -241,7 +306,7 @@ export class Home extends React.Component {
 							onPress={() => this.sliderAction(item)}
 						>
 							<View style={styles.btnPrice}>
-								<Text>${item.price}/FLIGHT</Text>
+								<Text>${item.price}/SEAT</Text>
 							</View>
 						</TouchableOpacity>
 					</View>
@@ -250,14 +315,14 @@ export class Home extends React.Component {
 		};
 
 		return (
-			<View style={styles.container}>
+			<ScrollView style={styles.container}>
 				<View style={styles.main}>
-					<Image source={homeSlide} style={styles.image} />
+					<Image source={ban} style={styles.image} />
 
 					<View style={styles.header}>
 						<Image
 							source={logo}
-							style={{ width: 50, height: 30 }}
+							style={{ width: 120, height: 25 }}
 							resizeMode="contain"
 						/>
 						<TouchableOpacity
@@ -269,19 +334,7 @@ export class Home extends React.Component {
 						</TouchableOpacity>
 					</View>
 
-					{this.props.homedeal && (
-						<Carousel
-							ref={(ref) => (this.carouselRef = ref)}
-							data={this.props.homedeal.slider}
-							renderItem={({ item }) => <ItemCar item={item} />}
-							onSnapToItem={(i) => this.setState({ activeTab: i })}
-							sliderWidth={SCREEN_WIDTH}
-							itemWidth={SCREEN_WIDTH}
-							slideStyle={{ width: SCREEN_WIDTH }}
-							inactiveSlideOpacity={1}
-							inactiveSlideScale={1}
-						/>
-					)}
+					 
 					<View style={{ flexDirection: "row" }}>
 						{this.props.homedeal &&
 							this.props.homedeal.slider.map((e, i) => {
@@ -310,10 +363,109 @@ export class Home extends React.Component {
         <Text style={{color:"#FFF"}}>$1,695/SEAT</Text>
       </View>
    */}
+
+			<View style={{
+				flexDirection:'row',
+				justifyContent:'space-between',
+				paddingHorizontal:15,
+				marginTop:15,
+			}}>
+				<Text >One Way</Text>
+				<Text>
+					<Image source={chair}/>
+					Seats</Text>
+			</View>
+			<View style={{
+					padding:20,
+					backgroundColor:'#FFF',
+					marginVertical:15
+				}}>
+				<View>
+			<Image style={{
+				position:'absolute',
+				left:0,
+				top:10,
+				maxWidth:30,
+				resizeMode:'contain'
+			}} source={imgfrom} />
+			<Input
+					labelStyle={{
+						paddingLeft:40,
+						marginTop:10
+					}}
+					style={{
+						paddingLeft:40
+					}}
+					
+					label="Where From?"
+					value={this.state.from}
+					onChangeText={(val) => {
+						this.handleTextChange("from", val);
+					}}
+					autoCapitalize="none"
+					keyboardType="text"
+				/>
+				</View>
+				<View>
+			<Image style={{
+				position:'absolute',
+				left:0,
+				top:0,
+				maxWidth:30,
+				resizeMode:'contain'
+			}} source={imgTo} />
+			<Input
+					labelStyle={{
+						paddingLeft:40,
+						marginTop:10
+					}}
+					style={{
+						paddingLeft:40
+					}}
+					
+					label="Where to?"
+					value={this.state.to}
+					onChangeText={(val) => {
+						this.handleTextChange("to", val);
+					}}
+					autoCapitalize="none"
+					keyboardType="text"
+				/>
+				</View>
+			</View>
+
+			<View>
+			<Text style={{
+					paddingHorizontal:15,
+					fontSize:22,
+					marginTop:15,
+					marginBottom:10,
+					fontWeight:'bold'
+				}}>Amazing Deal's</Text>
 				{this.props.homedeal && (
 					<FlatList
 						data={this.props.homedeal.deals}
-						style={{ backgroundColor: "#3d3d3d" }}
+						horizontal={true}
+						style={{ backgroundColor: "#F2F2F2" }}
+						renderItem={renderItem2}
+						keyExtractor={(item) => item.id}
+					/>
+				)}
+				
+			</View>
+
+
+				<Text style={{
+					paddingHorizontal:15,
+					fontSize:22,
+					marginTop:15,
+					marginBottom:10,
+					fontWeight:'bold'
+				}}>Popular seats routes</Text>
+				{this.props.homedeal && (
+					<FlatList
+						data={this.props.homedeal.deals}
+						style={{ backgroundColor: "#F2F2F2" }}
 						renderItem={renderItem}
 						keyExtractor={(item) => item.id}
 					/>
@@ -376,7 +528,7 @@ export class Home extends React.Component {
 						)}
 					</View>
 				</BottomSheet>
-			</View>
+			</ScrollView>
 		);
 	}
 }
@@ -384,7 +536,7 @@ export class Home extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
+		backgroundColor: "#F2F2F2",
 	},
 	header: {
 		position: "absolute",
@@ -402,23 +554,23 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 	},
 	main: {
-		backgroundColor: "#000",
-		padding: 10,
-		height: 300,
+		backgroundColor: "#e4e4e4",
+		// padding: 10,
+		height: 200,
 		alignItems: "center",
 		justifyContent: "center",
 	},
 	smText: {
-		color: "#FFF",
+		color: "#000",
 	},
 	image: {
 		flex: 1,
-		resizeMode: "cover",
+		resizeMode: "contain",
 		justifyContent: "center",
 		position: "absolute",
-		width: "60%",
+		width: "100%",
 		height: "100%",
-		right: 0,
+		//right: 0,
 		zIndex: -1,
 	},
 	botnav: {
@@ -433,13 +585,13 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	headingText: {
-		color: "#FFF",
+		color: "#000",
 		fontSize: 20,
 	},
 	btnPrice: {
 		padding: 10,
 		paddingHorizontal: 20,
-		backgroundColor: "#FFF",
+		backgroundColor: "#b49a5a",
 		borderRadius: 30,
 	},
 	barBottom: {
@@ -458,8 +610,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		marginVertical: 1,
 		marginHorizontal: 2,
-		backgroundColor: "#fff",
+		backgroundColor: "#F2F2F2",
 		borderRadius: 5,
+		marginTop:10,
+		marginBottom:10
 	},
 	flightImgBox: {
 		width: 134,
@@ -473,7 +627,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		borderBottomWidth: 1,
-		borderBottomColor: "#D8343B",
+		borderBottomColor: "#b49a5a",
 		padding: 10,
 	},
 	ww: {

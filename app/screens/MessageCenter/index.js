@@ -83,7 +83,7 @@ export class MessageCenter extends React.Component {
 			<View style={styles.container}>
 				<Text
 					style={{
-						color: "#FFF",
+						color: "#000",
 						paddingTop: 40,
 						paddingBottom: 20,
 						textAlign: "center",
@@ -120,11 +120,11 @@ export class MessageCenter extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#3d3d3d",
+		backgroundColor: "#e4e4e4",
 	},
 	item: {
 		padding: 10,
-		backgroundColor: "#8B8B8B",
+		backgroundColor: "#98989c",
 		marginVertical: 5,
 		flexDirection: "row",
 		alignItems: "center",

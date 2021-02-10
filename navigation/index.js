@@ -60,8 +60,9 @@ const options = {
 	headerTitleStyle: {
 		color: "#FFF",
 		textAlign: "center",
-		fontFamily: "Helvetica-Neue",
+		fontFamily: "Roboto",
 	},
+	headerBackTitle:'#FFF'
 };
 function screen2(props) {
 	return <SearchFlight {...props} />;
@@ -88,7 +89,7 @@ function HomeTabScreen(props) {
 		// set icons
 		let icon1Data = (routeName == "Home") ? icon1Red : icon1;
 		let icon2Data = (routeName == "Screen2") ? icon2Red : icon2;
-		let icon3Data = (routeName == "Trips") ? icon3Red : icon3;
+		let icon3Data = (routeName == "Trips") ? icon2Red : icon2;
 		let icon4Data = (routeName == "Screen4") ? icon4Red : icon4;
 		let icon5Data = (routeName == "Screen5") ? icon5Red : icon5;
 		if (routeName != undefined) {
@@ -114,10 +115,11 @@ function HomeTabScreen(props) {
 								break;
 							case "Trips":
 								iconName = icon3Image;
-								break;
-							case "Screen4":
-								iconName = icon4Image;
-								break;
+						
+								case "Screen4":
+									iconName = icon4Image;
+									break;		break;
+						 
 							case "Screen5":
 								iconName = icon5Image;
 								break;
@@ -138,7 +140,7 @@ function HomeTabScreen(props) {
 				inactiveTintColor: "gray",
 				showLabel: false,
 				style: {
-					backgroundColor: "#000",
+					backgroundColor: "#fff",
 				},
 			}}
 		>
@@ -154,8 +156,7 @@ function HomeTabScreen(props) {
 			/> */}
 			<Tab.Screen name="Home" component={Home} />
 			<Tab.Screen name="Screen2" component={screen2} />
-			<Tab.Screen name="Trips" component={screen3} />
-			<Tab.Screen name="Screen4" component={screen4} />
+			<Tab.Screen name="Trips" component={screen3} /> 
 			<Tab.Screen name="Screen5" component={screen5} />
 		</Tab.Navigator>
 	);

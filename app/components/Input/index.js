@@ -35,7 +35,8 @@ const defaultStyles = {
     position: 'absolute',
       left: 0,
       color:black?'black':'#000',
-      fontFamily:"Helvetica-Neue"
+      
+      
   },
   textInput: {
       height: 40, 
@@ -57,7 +58,7 @@ const defaultStyles = {
     const animatedLabelStyle = {
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [18, 7],
+        outputRange: [20, 7],
       }),
       fontSize: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
@@ -70,7 +71,7 @@ const defaultStyles = {
     };
     return (
       <View style={{ paddingTop: 18 }}>
-        <Animated.Text style={[style.labelStyle,animatedLabelStyle,{color:colorLablel?colorLablel:black?'black':'#000'}]}>
+        <Animated.Text style={[style.labelStyle,props.labelStyle,animatedLabelStyle,{color:colorLablel?colorLablel:black?'black':'#000'}]}>
           {label}
         </Animated.Text>
         <TextInput

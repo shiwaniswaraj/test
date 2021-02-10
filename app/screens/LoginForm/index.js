@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Platform } from "react-native";
+import { StyleSheet, View, Platform,TouchableOpacity } from "react-native";
 import Input from "@components/Input";
 import Text from "@components/Text";
 import Button from "@components/Button";
@@ -10,8 +10,10 @@ import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 
 import { connect } from "react-redux";
-import { LoginAction } from "../../redux/action/auth";
+import { LoginAction,changeLoginStatus } from "../../redux/action/auth";
 import AsyncStorage from "@react-native-community/async-storage";
+import Overlay from 'react-native-modal-overlay';
+
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -101,6 +103,10 @@ class LoginForm extends React.Component {
 	async componentDidMount() {
     //this.enablePushNotifications();
     //this.props.showLoadingGlobal();
+
+
+
+
     await this.enablePushNotifications().then((token) => {
 			this.setState({
 				token,
@@ -173,7 +179,7 @@ class LoginForm extends React.Component {
 
 	render() {
 		const { route } = this.props;
-		const { email,password} = this.state;
+		const { email,password,showfrgt} = this.state;
 
 		if (this.props.isLoggedin) {
 			return (
@@ -186,7 +192,14 @@ class LoginForm extends React.Component {
 		}
 
 		return (
+				
 			<View style={styles.container}>
+				
+				<Overlay visible={showfrgt} onClose={this.onClose} containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.78)'}} closeOnTouchOutside>
+          <Text>Some Modal Content</Text>
+        </Overlay>
+
+
 				<Input
 					label="Email"
 					value={this.state.email}
@@ -209,13 +222,15 @@ class LoginForm extends React.Component {
 					<Button
 						filled
 						onPress={() => {
-							this.handleLogin();
+							this.props.changeLoginStatus();
 						}}
 						disabled={!password || !email}
 						title="Login"
 					/>
 				</View>
+				<TouchableOpacity>
 						<Text style={{textAlign:'center',marginTop:10}}>Forgot Password?</Text>
+		</TouchableOpacity>
 			</View>
 		);
 	}
@@ -244,6 +259,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		doLogin: (em, pass, tok) => dispatch(LoginAction(em, pass, tok)),
+		changeLoginStatus: (em, pass, tok) => dispatch(changeLoginStatus(em, pass, tok)),
+		
 		hideLoadingGlobal: () => dispatch({ type: "hideloading" }),
 		showLoadingGlobal: () => dispatch({ type: "showloading" }),
 	};

@@ -87,7 +87,41 @@ class Login extends React.Component {
 		  <View style={styles.slide}>
 			<Text style={styles.title}>{item.title}</Text>
 			<Text style={styles.text}>{item.text}</Text>
-			{this._renderNextButton()}
+		
+			<TouchableOpacity
+			style={{
+				flex: 1,
+				backgroundColor: "#B49A5A",
+				width:'100%',
+				padding:25,
+				borderRadius:10,
+				justifyContent:"center",
+				alignItems:"center",
+				marginTop:7,
+				shadowOpacity: 0.5,
+				shadowRadius: 10,
+				shadowOffset: {
+					height: 5,
+					width: 5
+				},
+				elevation: 5,
+				marginBottom:7,
+			}}
+			onPress={() => {
+				if(this.state.currindex<slides.length-1){
+					this.setState({
+						currindex:this.state.currindex+1
+					},()=>{
+					this.slider.current.goToSlide(this.state.currindex)
+					})
+				}else{
+					this._onDone();
+				}
+			}}
+			>
+				<Text> {this.state.currindex==2?"DONE":"NEXT"}  </Text>
+		 </TouchableOpacity>
+
 
 
 
@@ -108,30 +142,7 @@ class Login extends React.Component {
 		})
 	  }
 
-	  _renderNextButton = () => {
-		  const {currindex}=this.state;
-		return (
-			<Button
-			style={{width:'100%'}}
-			onPress={() => {
-				if(this.state.currindex<slides.length-1){
-
-				this.setState({
-					currindex:this.state.currindex+1
-				},()=>{
-				this.slider.current.goToSlide(this.state.currindex)
-				})
-			}else{
-				this._onDone();
-			}
-
-
-		}}
-			filled
-			title={this.state.currindex==2?"DONE":"NEXT"}
-		/>
-		);
-	  };
+	 
 	
 		
 	render() {
@@ -151,6 +162,11 @@ class Login extends React.Component {
 	  
 		return (
 			<View style={styles.container}>
+
+			 
+			 
+				 
+				 
 		  <Image resizeMode="contain" style={styles.imagebg} source={intro4}/>
 			 
 				 	<View style={styles.btnBase}>

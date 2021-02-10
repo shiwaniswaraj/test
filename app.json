@@ -2,7 +2,7 @@
   "expo": {
     "name": "EMCJET",
     "slug": "EMCJET",
-    "version": "1.0.1",
+    "version": "1.0.7",
     "privacy": "unlisted",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,7 +19,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.evolution.emcjet"
+      "bundleIdentifier": "com.evolution.emcjet",
+      "buildNumber": "6"
     },
     "web": {
       "favicon": "./assets/favicon.png"

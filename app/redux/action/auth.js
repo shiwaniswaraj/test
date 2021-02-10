@@ -31,6 +31,15 @@ export const logoutAction = () => {
 	};
 };
 
+export const changeLoginStatus = () => {
+	return async (dispatch, getState) => {
+		// dispatch({ type: LOGOUT });
+		dispatch({ type: LOGIN, paylod: {} });
+
+	};
+};
+
+
 const checkEmail = (em) => {
 	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(em)) {
 		return true;

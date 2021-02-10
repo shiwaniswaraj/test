@@ -37,7 +37,7 @@ export class Trips extends React.Component {
 								<Text style={{ color: "#FFF", marginBottom: 10 }}>
 									DEPARTURE
 								</Text>
-								<Text style={{ color: "red", fontSize: 22, marginBottom: 10 }}>
+								<Text style={{ color: "#000", fontSize: 22, marginBottom: 10 }}>
 									{e.startposition}
 								</Text>
 								<Text style={{ color: "#FFF", fontSize: 11, marginBottom: 10 }}>
@@ -49,7 +49,7 @@ export class Trips extends React.Component {
 
 							<View style={styles.box}>
 								<Text style={{ color: "#FFF", marginBottom: 10 }}>ARRIVAL</Text>
-								<Text style={{ color: "red", fontSize: 22, marginBottom: 10 }}>
+								<Text style={{ color: "#000", fontSize: 22, marginBottom: 10 }}>
 									{e.endposition}
 								</Text>
 								<Text style={{ color: "#FFF", fontSize: 11, marginBottom: 10 }}>
@@ -74,7 +74,7 @@ export class Trips extends React.Component {
 			<View style={styles.container}>
 				<Text
 					style={{
-						color: "#FFF",
+						color: "#000",
 						paddingTop: 40,
 						paddingBottom: 20,
 						textAlign: "center",
@@ -112,11 +112,11 @@ export class Trips extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#3d3d3d",
+		backgroundColor: "#e4e4e4",
 	},
 	item: {
 		padding: 10,
-		backgroundColor: "#8B8B8B",
+		backgroundColor: "#98989c",
 		marginVertical: 5,
 		flexDirection: "column",
 		alignItems: "center",
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
 	line: {
 		width: 2,
 		height: 100,
-		backgroundColor: "#FFF",
+		backgroundColor: "#b49a5a",
 	},
 });
 

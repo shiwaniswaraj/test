@@ -183,13 +183,17 @@ export class DealsInner extends React.Component {
 						{/* <Text style={{ fontSize: 11, marginLeft: 30 }}>
 							UP TO {item.lift.maxPax} SEATS
 						</Text> */}
-							<Image
+						<Image
 								source={chair}
 								style={styles.pin}
 								resizeMode="contain"
 							/>
+						<Text style={{fontSize: 14, marginRight: 5}}>
+							Total Seats:
+						</Text>
+							
 							{item && (
-								<Text style={{ color: "red", textAlign: "right" }}>
+								<Text style={{ color: "#000", textAlign: "right" }}>
 									{item.lift.maxPax}
 								</Text>
 							)}
@@ -233,9 +237,9 @@ export class DealsInner extends React.Component {
 									</View>
 									<View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
 										{item && (
-											<Text style={{ color: "red" }}>
+											<Text style={{ color: "#000" }}>
 												${item.sellerprice.price}/
-												<Text style={{ fontSize: 10 }}>FLIGHT</Text>
+												<Text style={{ fontSize: 10 }}>SEAT</Text>
 											</Text>
 										)}
 									</View>
@@ -258,7 +262,7 @@ export class DealsInner extends React.Component {
 								>
 									<View style={styles.botwrap}>
 										<View style={styles.lefbot}>
-											<Text style={{ color: "red", fontSize: 19 }}>
+											<Text style={{ color: "#000", fontSize: 19 }}>
 												{e.startAirport.icao}
 											</Text>
 											<Text style={{ fontSize: 10 }}>
@@ -267,7 +271,7 @@ export class DealsInner extends React.Component {
 										</View>
 										<Image source={iconPlane} style={styles.incoPLane} />
 										<View style={styles.rightbot}>
-											<Text style={{ color: "red", fontSize: 19 }}>
+											<Text style={{ color: "#000", fontSize: 19 }}>
 												{e.endAirport.icao}
 											</Text>
 											<Text style={{ fontSize: 10 }}>{e.endAirport.name}</Text>
@@ -285,7 +289,7 @@ export class DealsInner extends React.Component {
 								>
 									<View style={styles.botwrap}>
 										<View style={styles.lefbot}>
-											<Text style={{ color: "red", fontSize: 19 }}>
+											<Text style={{ color: "#000", fontSize: 19 }}>
 												{e.dateTime.time}
 											</Text>
 											<Text style={{ fontSize: 10 }}>
@@ -294,7 +298,7 @@ export class DealsInner extends React.Component {
 										</View>
 										<Image source={iconPlane} style={styles.incoPLane} />
 										<View style={styles.rightbot}>
-											<Text style={{ color: "red", fontSize: 19 }}>
+											<Text style={{ color: "#000", fontSize: 19 }}>
 												{moment(
 													`${e.dateTime.date} ${e.dateTime.time}:00`,
 													"YYYY-MM-DD HH:mm:ss"
@@ -440,7 +444,7 @@ export class DealsInner extends React.Component {
 											/>
 											<Polyline
 												strokeWidth={2}
-												strokeColor="red"
+												strokeColor="#000"
 												coordinates={[
 													{
 														latitude: parseFloat(e.endAirport.latitude),
@@ -476,12 +480,12 @@ export class DealsInner extends React.Component {
 											}}
 										>
 											<Text style={{ textTransform: "uppercase" }}>
-												total seats
+												selected seats
 											</Text>
 											<View style={{ flexDirection: "row", marginTop: 10 }}>
 												<Image source={chair} style={styles.chair} />
-												{/* <Text style={{ color: "red" }}>{e.paxCount}</Text> */}
-												<Text style={{ color: "red" }}>{item.lift.maxPax}</Text>
+												<Text style={{ color: "red" }}>{e.paxCount}</Text>
+												{/* <Text style={{ color: "#000" }}>{item.lift.maxPax}</Text> */}
 											</View>
 										</View>
 										<View
@@ -496,7 +500,7 @@ export class DealsInner extends React.Component {
 											</Text>
 											<View style={{ flexDirection: "row", marginTop: 10 }}>
 												<Image source={clockBlack} style={styles.chair} />
-												<Text style={{ color: "red" }}>
+												<Text style={{ color: "#000" }}>
 													{moment
 														.duration(
 															this.props.route.params.flighttimes,
@@ -653,7 +657,7 @@ const styles = StyleSheet.create({
 		transform: [{ rotateY: "45deg" }, { rotateZ: "45deg" }],
 	},
 	dettr: {
-		color: "red",
+		color: "#000",
 	},
 	dettl: {
 		flex: 1,

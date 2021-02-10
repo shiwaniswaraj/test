@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Image, ScrollView } from "react-native";
-import homeSlide from "@assets/images/homeSlide.png";
+import homeSlide from "@assets/images/background.png";
 import logoCircle from "@assets/icon.png";
 import Text from "@components/Text";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -166,13 +166,13 @@ const styles = StyleSheet.create({
 		backgroundColor: "#FFF",
 	},
 	name: {
-		color: "#FFF",
+		color: "#000",
 		fontSize: 28,
 		marginTop: 20,
 	},
 	main: {
-		backgroundColor: "#000",
-		padding: 10,
+		backgroundColor: "#e4e4e4",
+		// padding: 10,
 		height: 300,
 		alignItems: "center",
 		justifyContent: "center",
@@ -183,9 +183,9 @@ const styles = StyleSheet.create({
 		resizeMode: "cover",
 		justifyContent: "center",
 		position: "absolute",
-		width: "60%",
+		width: "100%",
 		height: "110%",
-		right: 0,
+		// right: 0,
 		zIndex: -1,
 	},
 	logo: {
@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
 		height: 25, */
 		marginRight: 10,
 		//resizeMode: "contain",
+		color: '#b49a5a'
 	},
 });
 

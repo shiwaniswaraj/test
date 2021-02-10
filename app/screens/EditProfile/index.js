@@ -8,7 +8,7 @@ import {
 	Platform,
 	TouchableOpacity,
 } from "react-native";
-import homeSlide from "@assets/images/homeSlide.png";
+import homeSlide from "@assets/images/background.png";
 import Input from "@components/Input";
 import Button from "@components/Button";
 import * as ImagePicker from "expo-image-picker";
@@ -342,8 +342,8 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 	},
 	main: {
-		backgroundColor: "#000",
-		padding: 10,
+		backgroundColor: "#e4e4e4",
+		// padding: 10,
 		height: 200,
 		alignItems: "center",
 		justifyContent: "center",
@@ -371,9 +371,9 @@ const styles = StyleSheet.create({
 		resizeMode: "cover",
 		justifyContent: "center",
 		position: "absolute",
-		width: "60%",
+		width: "100%",
 		height: "110%",
-		right: 0,
+		//right: 0,
 		zIndex: -1,
 	},
 	logo: {
